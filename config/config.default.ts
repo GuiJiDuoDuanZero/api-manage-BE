@@ -15,6 +15,19 @@ export default (appInfo: EggAppInfo) => {
     sourceUrl: `https://github.com/eggjs/examples/tree/master/${appInfo.name}`,
   };
 
+  /* 自定义 token 的加密条件字符串 */
+  config.jwt = {
+    secret: 'test-egg-serve-jwt'
+  }
+
+  /* 邮件配置 */
+  config.email = {
+    host: 'smtp.qq.com', //邮件host
+    name: '1375883312@qq.com', // 邮件名
+    password: 'rqauvgkkcjzahgce',  //  vcamessage@163.com Vca123456  ,授权码登录
+    // to:'184336166@qq.com,xxx@163.com' //发送给谁
+  };
+
   // the return config will combines to EggAppConfig
   return {
     ...config,
