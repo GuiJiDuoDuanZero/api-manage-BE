@@ -1,13 +1,38 @@
 import { Controller } from 'egg';
+import { EMIAL_EXPRIED_TIME } from '../chore/email.constant';
 
 class EmailController extends Controller {
+
+  private vEmail() {
+    return {
+      email: { type: 'string', required: true },
+      username: { type: 'string', required: true }
+    }
+  };
+
   public async sendEmail() {
     const { ctx } = this;
-    const sendEmailRes = await ctx.service.email.sendMail('1375883312@qq.com', '叼毛', { username: '1375883312@qq.com', code: ctx.helper.generatorEmailCode() });
-    console.log(sendEmailRes);
-    if (sendEmailRes) {
-      ctx.body = { code: 0 }
-    } else {
+
+    try {
+      const query = ctx.request.query;
+ 
+      ctx.validate(this.vEmail(), query);
+      const code = ctx.helper.generatorEmailCode();
+      await this.service.dbRedis.set<number>(query.username, code, EMIAL_EXPRIED_TIME);
+      const sendEmailRes = await ctx.service.email.sendMail(
+        query.email,
+        '注册',
+        {
+          username: query.username,
+          code
+        });
+      if (sendEmailRes) {
+        ctx.body = { code: 0 }
+      } else {
+        ctx.body = { code: 40000 }
+      }
+    } catch (error) {
+      console.log('获取邮箱验证码接口出错', error);
       ctx.body = { code: 40000 }
     }
   }

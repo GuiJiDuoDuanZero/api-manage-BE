@@ -4,8 +4,9 @@ class UserController extends Controller {
 
   private vUser() {
     return {
-      userName: { type: 'string', required: true },
-      passWord: { type: 'string', required: true }
+      username: { type: 'string', required: true },
+      password: { type: 'string', required: true },
+      code: { type: 'string', required: true }
     }
   };
 
@@ -16,18 +17,40 @@ class UserController extends Controller {
     const { ctx } = this;
 
     // 接收校验参数
-    ctx.validate(this.vUser(), ctx.request.body);
+    try {
+      const params = ctx.request.body;
+      ctx.validate(this.vUser(), params);
 
-    // 判断用户名是否重复
-    const isUser = false;
-    if (isUser) {
-      ctx.status = 401;
-      ctx.body = {
-        code: 40001
+      const code = await this.service.dbRedis.get(params.username);
+
+      if (!code) {
+        ctx.body = {
+          msg: '验证码不存在或已过期'
+        }
+        return
+      }
+
+      if (code !== params.code) {
+        ctx.body = {
+          msg: '验证码错误'
+        }
+        return;
+      }
+
+      // 判断用户名是否重复
+      const isUser = false;
+      if (isUser) {
+        ctx.status = 401;
+        ctx.body = {
+          code: 40001
+        };
+        return;
       };
-      return;
-    };
-    ctx.body = { code: 0 }
+      ctx.body = { code: 0 }
+    } catch (error) {
+      ctx.body = { code: 400001 }
+    }
+
   }
 
   /**
