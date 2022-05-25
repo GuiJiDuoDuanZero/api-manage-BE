@@ -3,9 +3,11 @@
 
 import 'egg';
 import ExportEmailCodeCheck from '../../../app/middleware/emailCodeCheck';
+import ExportTokenHandler from '../../../app/middleware/tokenHandler';
 
 declare module 'egg' {
   interface IMiddleware {
     emailCodeCheck: typeof ExportEmailCodeCheck;
+    tokenHandler: typeof ExportTokenHandler;
   }
 }

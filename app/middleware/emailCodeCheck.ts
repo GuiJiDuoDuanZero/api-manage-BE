@@ -1,7 +1,10 @@
-export default () => {
-  return async function emailCodeCheck(ctx, next) {
+import { EMAIL_REDIS_KEY_TYPE } from '../chore/email.constant';
+import { Context } from 'egg';
+
+export default (type: EMAIL_REDIS_KEY_TYPE) => {
+  return async function emailCodeCheck(ctx: Context<any>, next) {
     const params = ctx.request.body;
-    const code = await ctx.service.dbRedis.get(params.username);
+    const code = await ctx.service.dbRedis.get(`${params.username}${type}`);
 
     if (!params.hasOwnProperty('code')) {
       ctx.body = {
@@ -23,6 +26,6 @@ export default () => {
       return;
     }
 
-   await next();
+    await next();
   }
 }

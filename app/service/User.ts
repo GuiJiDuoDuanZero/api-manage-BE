@@ -44,5 +44,19 @@ class UserService extends Service {
     }
   }
 
+  // 更新用户密码
+  async updatePass(params) {
+    const { ctx } = this;
+    try {
+      const results = await ctx.model.User.updateOne({ username: params.username }, { $set: { password: params.password, updateAt: Date.now() } });
+      return results;
+    } catch (err) {
+      return {
+        code: 500,
+        msg: JSON.stringify(err),
+      };
+    }
+  }
+
 }
 export default UserService;

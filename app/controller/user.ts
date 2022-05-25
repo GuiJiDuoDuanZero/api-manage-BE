@@ -39,7 +39,6 @@ class UserController extends Controller {
 
       // 判断用户名是否重复
       const user = await ctx.service.user.find(params);
-      await ctx.service.user.create(params);
 
       if (user) {
         ctx.status = 401;
@@ -49,13 +48,24 @@ class UserController extends Controller {
         return;
       };
 
+      const dbUser = await ctx.service.user.create(params);
+      console.log('dbUser', dbUser);
+
       const token = app.jwt.sign(
         { username: params.username },
         app.config.jwt.secret,
         { expiresIn: '24h' }
       )
 
-      ctx.body = { msg: '注册成功', token }
+      ctx.body = {
+        msg: '注册成功', data: {
+          userInfo: {
+            token,
+            username: dbUser.username,
+            uid: dbUser._id
+          }
+        }
+      };
     } catch (error) {
       ctx.body = { code: 40001 }
     }
@@ -71,13 +81,13 @@ class UserController extends Controller {
     try {
       const params = ctx.request.body;
       ctx.validate(this.vUser(), params);
-      console.log(params);
-      const data = await ctx.service.user.find(params);
-      if (!data) {
+      const dbUser = await ctx.service.user.find(params);
+
+      if (!dbUser) {
         ctx.body = { msg: '用户不存在' };
         return;
       }
-      if (data.password !== params.password) {
+      if (dbUser.password !== params.password) {
         ctx.body = { msg: '登录密码错误' };
         return;
       }
@@ -88,11 +98,63 @@ class UserController extends Controller {
         { expiresIn: '24h' }
       )
 
-      ctx.body = { code: 0, token };
+      ctx.body = {
+        msg: '登录成功', data: {
+          userInfo: {
+            token,
+            username: dbUser.username,
+            uid: dbUser._id
+          }
+        }
+      };
     } catch (error) {
       ctx.body = { msg: '登录失败' }
     }
+  }
 
+  /**
+   * 忘记密码
+   */
+  public async forget() {
+    const { ctx, app } = this;
+
+    try {
+      const params = ctx.request.body;
+      ctx.validate(this.vRegister(), params);
+
+      await ctx.service.user.updatePass(params);
+      const dbUser = await ctx.service.user.find(params);
+
+      if (!dbUser) {
+        return ctx.body = {
+          msg: '服务器异常'
+        }
+      }
+
+      if (dbUser.password !== params.password) {
+        return ctx.body = {
+          msg: '重置密码失败'
+        }
+      }
+
+      const token = app.jwt.sign(
+        { username: params.username },
+        app.config.jwt.secret,
+        { expiresIn: '24h' }
+      )
+
+      ctx.body = {
+        msg: '重置密码成功', data: {
+          userInfo: {
+            token,
+            username: dbUser.username,
+            uid: dbUser._id
+          }
+        }
+      };
+    } catch (error) {
+      ctx.body = { msg: '登录失败' }
+    }
   }
 }
 
