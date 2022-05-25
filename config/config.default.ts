@@ -37,6 +37,16 @@ export default (appInfo: EggAppInfo) => {
     }
   }
 
+  config.mongoose = {
+      client: {
+        url: 'mongodb://127.0.0.1:27017/admin',
+        options: {
+          user: 'admin',
+          pass: '123456'
+        },
+      }
+    }
+
   // the return config will combines to EggAppConfig
   return {
     ...config,

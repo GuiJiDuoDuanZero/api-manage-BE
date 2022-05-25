@@ -15,7 +15,14 @@ class EmailController extends Controller {
 
     try {
       const query = ctx.request.query;
- 
+      const userInfo = await ctx.service.user.findEmail(query);
+      if (userInfo) {
+        ctx.body = {
+          msg: '邮箱已经被注册'
+        }
+        return
+      }
+
       ctx.validate(this.vEmail(), query);
       const code = ctx.helper.generatorEmailCode();
       await this.service.dbRedis.set<number>(query.username, code, EMIAL_EXPRIED_TIME);
@@ -29,11 +36,11 @@ class EmailController extends Controller {
       if (sendEmailRes) {
         ctx.body = { code: 0 }
       } else {
-        ctx.body = { code: 40000 }
+        ctx.body = { msg: '发送邮件失败，请重试' }
       }
     } catch (error) {
       console.log('获取邮箱验证码接口出错', error);
-      ctx.body = { code: 40000 }
+      ctx.body = { msg: '邮件服务异常' }
     }
   }
 }

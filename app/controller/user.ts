@@ -6,7 +6,14 @@ class UserController extends Controller {
     return {
       username: { type: 'string', required: true },
       password: { type: 'string', required: true },
-      code: { type: 'string', required: true }
+    }
+  };
+
+  private vRegister() {
+    return {
+      username: { type: 'string', required: true },
+      password: { type: 'string', required: true },
+      email: { type: 'string', required: true }
     }
   };
 
@@ -14,41 +21,43 @@ class UserController extends Controller {
    * 用户注册
    */
   public async register() {
-    const { ctx } = this;
+    const { ctx, app } = this;
 
     // 接收校验参数
     try {
       const params = ctx.request.body;
-      ctx.validate(this.vUser(), params);
+      ctx.validate(this.vRegister(), params);
 
-      const code = await this.service.dbRedis.get(params.username);
+      const userInfo = await ctx.service.user.findEmail(params);
 
-      if (!code) {
+      if (userInfo) {
         ctx.body = {
-          msg: '验证码不存在或已过期'
+          msg: '邮箱已经被注册'
         }
         return
       }
 
-      if (code !== params.code) {
-        ctx.body = {
-          msg: '验证码错误'
-        }
-        return;
-      }
-
       // 判断用户名是否重复
-      const isUser = false;
-      if (isUser) {
+      const user = await ctx.service.user.find(params);
+      await ctx.service.user.create(params);
+
+      if (user) {
         ctx.status = 401;
         ctx.body = {
-          code: 40001
+          msg: '邮箱已被注册'
         };
         return;
       };
-      ctx.body = { code: 0 }
+
+      const token = app.jwt.sign(
+        { username: params.username },
+        app.config.jwt.secret,
+        { expiresIn: '24h' }
+      )
+
+      ctx.body = { msg: '注册成功', token }
     } catch (error) {
-      ctx.body = { code: 400001 }
+      ctx.body = { code: 40001 }
     }
 
   }
@@ -57,16 +66,33 @@ class UserController extends Controller {
    * 用户登录
    */
   public async login() {
-    const { ctx } = this;
-    // 接收并校验参数
-    ctx.validate(this.vUser(), ctx.request.body);
-    const data = await ctx.service.user.Login(ctx.request.body);
-    if (!data) {
-      ctx.status = 401;
-      ctx.body = { code: 40000 };
-      return;
+    const { ctx, app } = this;
+
+    try {
+      const params = ctx.request.body;
+      ctx.validate(this.vUser(), params);
+      console.log(params);
+      const data = await ctx.service.user.find(params);
+      if (!data) {
+        ctx.body = { msg: '用户不存在' };
+        return;
+      }
+      if (data.password !== params.password) {
+        ctx.body = { msg: '登录密码错误' };
+        return;
+      }
+
+      const token = app.jwt.sign(
+        { username: params.username },
+        app.config.jwt.secret,
+        { expiresIn: '24h' }
+      )
+
+      ctx.body = { code: 0, token };
+    } catch (error) {
+      ctx.body = { msg: '登录失败' }
     }
-    ctx.body = { code: 0 };
+
   }
 }
 

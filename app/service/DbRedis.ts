@@ -19,7 +19,7 @@ class DbRedis extends Service {
     }
   };
 
-  async get(key) {
+  public async get(key) {
     const { redis } = this.app;
     const data = await redis.get(key);
 
@@ -27,6 +27,11 @@ class DbRedis extends Service {
       return false;
     };
     return JSON.parse(data);
+  }
+
+  public async remove(key) {
+    const { redis } = this.app
+    return await redis.del(key)
   }
 }
 
