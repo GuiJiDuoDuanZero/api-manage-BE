@@ -6,7 +6,7 @@ class WorkspaceService extends Service {
   async create(params) {
     const { ctx } = this;
     try {
-      const results = await ctx.model.workspace.create(params);
+      const results = await ctx.model.Workspace.create(Object.assign({}, params));
       return results;
     } catch (err) {
       return {

@@ -1,4 +1,5 @@
 import { Controller } from 'egg';
+import { USERINFO_EXPIRED_TIME } from '../chore/redis.constant';
 
 class UserController extends Controller {
 
@@ -55,6 +56,8 @@ class UserController extends Controller {
         app.config.jwt.secret,
         { expiresIn: '24h' }
       )
+      // 用户信息存入redis
+      await ctx.service.dbRedis.set(token, { uid: dbUser._id }, USERINFO_EXPIRED_TIME);
 
       ctx.body = {
         msg: '注册成功', data: {
@@ -95,7 +98,10 @@ class UserController extends Controller {
         { uid: dbUser.uid },
         app.config.jwt.secret,
         { expiresIn: '24h' }
-      )
+      );
+
+      // 用户信息存入redis
+      await ctx.service.dbRedis.set(token, { uid: dbUser._id }, USERINFO_EXPIRED_TIME);
 
       ctx.body = {
         msg: '登录成功', data: {
@@ -140,7 +146,9 @@ class UserController extends Controller {
         { uid: dbUser._id },
         app.config.jwt.secret,
         { expiresIn: '24h' }
-      )
+      );
+      // 用户信息存入redis
+      await ctx.service.dbRedis.set(token, { uid: dbUser._id }, USERINFO_EXPIRED_TIME);
 
       ctx.body = {
         msg: '重置密码成功', data: {

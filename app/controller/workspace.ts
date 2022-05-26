@@ -1,5 +1,5 @@
 import { Controller } from 'egg';
-import { uuid } from 'lsp-uuid';
+import { v4 as uuid } from 'uuid';
 
 class Workspace extends Controller {
 
@@ -15,10 +15,12 @@ class Workspace extends Controller {
     const { ctx } = this;
 
     try {
+      console.log(ctx.request.body, ctx.userInfo);
       const params = { ...ctx.request.body, ...ctx.userInfo };
       ctx.validate(this.vCreate(), params);
 
       params.workspaceId = uuid(params.uid);
+
       const workspaceInfo = await ctx.service.workspace.create(params);
 
       if (workspaceInfo) {
