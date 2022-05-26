@@ -19,7 +19,9 @@
     "ci": "npm run lint && npm run cov && npm run tsc",
     "autod": "autod",
     "lint": "eslint . --ext .ts",
-    "clean": "ets clean"
+    "clean": "ets clean",
+    "switch:personal": "git remote rm origin && git remote add origin https://gitee.com/Can-Chen/egg-serve.git ",
+    "switch:team": "git remote rm origin && git remote add origin https://github.com/8Class2Groups/api-manage-BE.git"
   },
   "dependencies": {
     "egg": "^2.6.1",
