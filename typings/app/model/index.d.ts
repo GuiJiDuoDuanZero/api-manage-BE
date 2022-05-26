@@ -3,9 +3,11 @@
 
 import 'egg';
 import ExportUser from '../../../app/model/user';
+import ExportWorkspace from '../../../app/model/workspace';
 
 declare module 'egg' {
   interface IModel {
     User: ReturnType<typeof ExportUser>;
+    Workspace: ReturnType<typeof ExportWorkspace>;
   }
 }

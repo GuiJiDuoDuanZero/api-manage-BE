@@ -23,5 +23,10 @@ export default (app: Application) => {
    * @desc 忘记密码
    */
   router.put('/forget', middleware.emailCodeCheck(EMAIL_REDIS_KEY_TYPE.forget), controller.user.forget);
+
+  /**
+   * @desc 创建工作区
+   */
+  router.post('/v0/workspace/create', middleware.tokenHandler(), controller.workspace.create);
 };
 

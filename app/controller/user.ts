@@ -49,10 +49,9 @@ class UserController extends Controller {
       };
 
       const dbUser = await ctx.service.user.create(params);
-      console.log('dbUser', dbUser);
 
       const token = app.jwt.sign(
-        { username: params.username },
+        { uid: dbUser._id },
         app.config.jwt.secret,
         { expiresIn: '24h' }
       )
@@ -93,7 +92,7 @@ class UserController extends Controller {
       }
 
       const token = app.jwt.sign(
-        { username: params.username },
+        { uid: dbUser.uid },
         app.config.jwt.secret,
         { expiresIn: '24h' }
       )
@@ -138,7 +137,7 @@ class UserController extends Controller {
       }
 
       const token = app.jwt.sign(
-        { username: params.username },
+        { uid: dbUser._id },
         app.config.jwt.secret,
         { expiresIn: '24h' }
       )

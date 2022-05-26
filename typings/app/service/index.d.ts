@@ -10,6 +10,7 @@ import ExportDbRedis from '../../../app/service/DbRedis';
 import ExportEmail from '../../../app/service/Email';
 import ExportTest from '../../../app/service/Test';
 import ExportUser from '../../../app/service/User';
+import ExportWorkspace from '../../../app/service/Workspace';
 
 declare module 'egg' {
   interface IService {
@@ -17,5 +18,6 @@ declare module 'egg' {
     email: AutoInstanceType<typeof ExportEmail>;
     test: AutoInstanceType<typeof ExportTest>;
     user: AutoInstanceType<typeof ExportUser>;
+    workspace: AutoInstanceType<typeof ExportWorkspace>;
   }
 }

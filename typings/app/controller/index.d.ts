@@ -4,10 +4,12 @@
 import 'egg';
 import ExportEmail from '../../../app/controller/email';
 import ExportUser from '../../../app/controller/user';
+import ExportWorkspace from '../../../app/controller/workspace';
 
 declare module 'egg' {
   interface IController {
     email: ExportEmail;
     user: ExportUser;
+    workspace: ExportWorkspace;
   }
 }
