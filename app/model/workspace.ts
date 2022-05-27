@@ -7,7 +7,7 @@ export default (app) => {
    * 后续是否增加工作区成员
    */
   const WorkspaceSchema = new Schema({
-    uid: { // 创建用户唯一标识
+    ownerUid: { // 创建用户唯一标识
       type: String,
       required: true
     },

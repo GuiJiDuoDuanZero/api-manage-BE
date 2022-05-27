@@ -7,6 +7,12 @@ class Workspace extends Controller {
     return {
       name: { type: 'string', required: true },
       private: { type: 'number', required: true },
+      ownerUid: { type: 'string', required: true }
+    }
+  }
+
+  private vGetList() {
+    return {
       uid: { type: 'string', required: true }
     }
   }
@@ -15,11 +21,14 @@ class Workspace extends Controller {
     const { ctx } = this;
 
     try {
-      console.log(ctx.request.body, ctx.userInfo);
+      console.log(ctx.userInfo)
+      ctx.userInfo.ownerUid = ctx.userInfo.uid;
+      delete ctx.userInfo.uid
+
       const params = { ...ctx.request.body, ...ctx.userInfo };
       ctx.validate(this.vCreate(), params);
 
-      params.workspaceId = uuid(params.uid);
+      params.workspaceId = uuid(params.ownerUid);
 
       const workspaceInfo = await ctx.service.workspace.create(params);
 
@@ -38,6 +47,45 @@ class Workspace extends Controller {
       }
     } catch (error) {
       console.log('工作区创建接口出错', error);
+      ctx.body = {
+        msg: '服务器错误'
+      }
+    }
+  }
+
+  /**
+   * @desc 目前因为还不存在共享工作区功能，所以获取工作区还是来自于个人创建的
+   */
+  public async getWorkspaceList() {
+    const { ctx } = this;
+
+    try {
+      ctx.validate(this.vGetList(), ctx.userInfo);
+      const workspaceList = await ctx.service.workspace.getList(ctx.userInfo);
+
+      if (!workspaceList.hasOwnProperty('code')) {
+        ctx.body = {
+          msg: '获取工作区列表成功',
+          data: {
+            workspaceList: (workspaceList as any[]).map(item => {
+              return {
+                workspaceId: item.workspaceId,
+                ownerUid: item.ownerUid,
+                uid: [],
+                private: item.private,
+                name: item.name
+              }
+            })
+          }
+        };
+
+        return;
+      }
+
+      ctx.body = {
+        msg: '获取工作区列表失败',
+      }
+    } catch (error) {
       ctx.body = {
         msg: '服务器错误'
       }

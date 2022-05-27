@@ -28,5 +28,10 @@ export default (app: Application) => {
    * @desc 创建工作区
    */
   router.post('/v0/workspace/create', middleware.tokenHandler(), controller.workspace.create);
+
+  /**
+ * @desc 获取工作区列表
+ */
+  router.get('/v0/workspace/list', middleware.tokenHandler(), controller.workspace.getWorkspaceList);
 };
 
