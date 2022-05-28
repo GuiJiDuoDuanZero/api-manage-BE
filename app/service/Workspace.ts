@@ -43,5 +43,36 @@ class WorkspaceService extends Service {
       };
     }
   }
+
+  private updateHelper(params) {
+    const updateParams = {};
+    Object.keys(params).forEach(key => {
+      if (key === 'name') {
+        updateParams['name'] = params[key];
+      };
+
+      if (Object.keys(updateParams).length > 0) {
+        updateParams['updateAt'] = Date.now();
+      }
+    });
+
+    return updateParams;
+  }
+
+  // 更新工作区
+  public async update(params) {
+    const { ctx } = this;
+    try {
+      const results = await ctx.model.Workspace.updateOne({ workspaceId: params.workspaceId }, {
+        $set: this.updateHelper(params)
+      });
+      return results;
+    } catch (err) {
+      return {
+        code: 500,
+        msg: JSON.stringify(err),
+      };
+    }
+  }
 }
 export default WorkspaceService;

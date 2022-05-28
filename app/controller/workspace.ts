@@ -25,6 +25,17 @@ class Workspace extends Controller {
     }
   }
 
+  private vUpdate() {
+    return {
+      workspaceId: {
+        type: 'string', required: true
+      },
+      name: {
+        type: 'string', required: false
+      }
+    }
+  }
+
   public async create() {
     const { ctx } = this;
 
@@ -112,6 +123,26 @@ class Workspace extends Controller {
       await ctx.service.workspace.delete(params);
       ctx.body = {
         msg: '删除工作区成功',
+      }
+    } catch (error) {
+      ctx.body = {
+        msg: '服务器错误'
+      }
+    }
+  }
+
+  /**
+   * @desc 更新工作区
+   */
+  public async updateWorkspace() {
+    const { ctx } = this;
+    try {
+      const params = { ...ctx.userInfo, ...ctx.request.body };
+      ctx.validate(this.vUpdate(), params);
+
+      await ctx.service.workspace.update(params);
+      ctx.body = {
+        msg: `更新工作区${params.name}成功`,
       }
     } catch (error) {
       ctx.body = {
