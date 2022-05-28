@@ -3,7 +3,6 @@ import { Context } from "egg"
 export default () => {
   return async function tokenHandler(ctx: Context<any>, next) {
     const token = <string>ctx.request.header['x-auth-token'];
-    console.log(token)
     if (token) {
       try {
         ctx.app.jwt.verify(token, ctx.app.config.jwt.secret);

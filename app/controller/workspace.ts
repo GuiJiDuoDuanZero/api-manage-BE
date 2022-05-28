@@ -17,6 +17,14 @@ class Workspace extends Controller {
     }
   }
 
+  private vDelete() {
+    return {
+      workspaceId: {
+        type: 'string', required: true
+      }
+    }
+  }
+
   public async create() {
     const { ctx } = this;
 
@@ -84,6 +92,26 @@ class Workspace extends Controller {
 
       ctx.body = {
         msg: '获取工作区列表失败',
+      }
+    } catch (error) {
+      ctx.body = {
+        msg: '服务器错误'
+      }
+    }
+  }
+
+  /**
+   * @desc 删除workspace，暂时不用考虑权限
+   */
+  public async deleteWorkspace() {
+    const { ctx } = this;
+    try {
+      const params = { ...ctx.userInfo, ...ctx.request.body };
+      ctx.validate(this.vDelete(), params);
+
+      await ctx.service.workspace.delete(params);
+      ctx.body = {
+        msg: '删除工作区成功',
       }
     } catch (error) {
       ctx.body = {
