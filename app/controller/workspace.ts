@@ -40,7 +40,6 @@ class Workspace extends Controller {
     const { ctx } = this;
 
     try {
-      console.log(ctx.userInfo)
       ctx.userInfo.ownerUid = ctx.userInfo.uid;
       delete ctx.userInfo.uid
 

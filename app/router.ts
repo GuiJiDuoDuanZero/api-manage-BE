@@ -7,22 +7,22 @@ export default (app: Application) => {
   /**
    * @desc 发送邮件
    */
-  router.get('/email', controller.email.sendEmail);
+  router.get('/v0/email', controller.email.sendEmail);
 
   /**
    * @desc 注册
    */
-  router.post('/register', middleware.emailCodeCheck(EMAIL_REDIS_KEY_TYPE.register), controller.user.register);
+  router.post('/v0/user/register', middleware.emailCodeCheck(EMAIL_REDIS_KEY_TYPE.register), controller.user.register);
 
   /**
    * @desc 登录
    */
-  router.post('/login', controller.user.login);
+  router.post('/v0/user/login', controller.user.login);
 
   /**
    * @desc 忘记密码
    */
-  router.put('/forget', middleware.emailCodeCheck(EMAIL_REDIS_KEY_TYPE.forget), controller.user.forget);
+  router.put('/v0/user/forget', middleware.emailCodeCheck(EMAIL_REDIS_KEY_TYPE.forget), controller.user.forget);
 
   /**
    * @desc 创建工作区
@@ -42,6 +42,11 @@ export default (app: Application) => {
   /**
    * @desc 更新工作区
    */
-   router.put('/v0/workspace/update', middleware.tokenHandler(), controller.workspace.updateWorkspace);
+  router.put('/v0/workspace/update', middleware.tokenHandler(), controller.workspace.updateWorkspace);
+
+  /**
+   * @desc 创建接口分类
+   */
+  router.post('/v0/workspace/item/class/create', middleware.tokenHandler(), controller.apiClass.create);
 };
 

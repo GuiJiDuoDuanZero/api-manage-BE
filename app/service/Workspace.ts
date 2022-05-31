@@ -2,6 +2,20 @@ import { Service } from 'egg'
 
 class WorkspaceService extends Service {
 
+  // 获取工作区信息
+  public async getWorkspace(params) {
+    const { ctx } = this;
+    try {
+      const results = await ctx.model.Workspace.findOne({ workspaceId: params.workspaceId });
+      return results;
+    } catch (error) {
+      return {
+        code: 500,
+        msg: JSON.stringify(error),
+      };
+    }
+  }
+
   // 创建工作区
   public async create(params) {
     const { ctx } = this;
