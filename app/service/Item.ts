@@ -35,9 +35,23 @@ class ItemService extends Service {
   public async getList(params) {
     const { ctx } = this;
     try {
-      // console.log('params24:',params)
       const results = await ctx.model.Item.find(params);
-      // console.log('results24:',results)
+      return results;
+    } catch (err) {
+      return {
+        code: 500,
+        msg: JSON.stringify(err),
+      };
+    }
+  }
+
+  // 获取项目详情
+  public async getDetail(params) {
+    const { ctx } = this;
+    try {
+      console.log('params24:',params)
+      const results = await ctx.model.Item.findOne(params);
+      console.log('results24:',results)
       return results;
     } catch (err) {
       return {

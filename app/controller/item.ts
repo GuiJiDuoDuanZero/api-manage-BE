@@ -15,6 +15,12 @@ class Item extends Controller {
     }
   }
 
+  private vGetDetail() {
+    return {
+      itemId: { type: 'string', required: true }
+    }
+  }
+
   public async create() {
     const { ctx } = this;
     try{
@@ -82,9 +88,56 @@ class Item extends Controller {
       }
     }
   }
+
+  /**
+   * @desc 获取项目详情
+   */
+   public async getItemDetail() {
+    const { ctx } = this;
+    try {
+      const query = ctx.request.query;
+      ctx.validate(this.vGetDetail(), query);
+      const itemDetail= await ctx.service.item.getDetail(query);
+      // const classList= await ctx.service.item.getDetail(query);
+      if (!itemDetail.hasOwnProperty('code')) {
+        ctx.body = {
+          msg: '获取项目详情成功',
+          code: 0,
+          data: {
+            itemDetail: { 
+              workspaceId:itemDetail.workspaceId,
+              itemId:itemDetail.itemId,
+              name:itemDetail.name,
+            },
+            // classList: (classList as any[]).map(item => {
+            //   return {
+            //     classListId: item.itemId,
+            //     name: item.name
+            //   }
+            // })
+          }
+        };
+        return;
+      }
+      ctx.body = {
+        msg: '获取项目详情失败',
+      }
+    } catch (error) {
+      ctx.body = {
+        msg: '服务器错误'
+      }
+    }
+  }
+
+
+            // (list as any[]).map(item => {
+            //   return {
+            //     workspaceId:item.workspaceId,
+            //     itemId: item.itemId,
+            //     name: item.name
+            //   }
+            // })
+
 }
-
-
-
 
 export default Item;
