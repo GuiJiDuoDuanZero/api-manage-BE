@@ -48,5 +48,10 @@ export default (app: Application) => {
    * @desc 创建接口分类
    */
   router.post('/v0/workspace/item/class/create', middleware.tokenHandler(), controller.apiClass.create);
+
+  /**
+   * @desc 创建项目
+   */
+  router.post('/v0/workspace/item/create', middleware.tokenHandler(), controller.item.create);
 };
 
