@@ -2,20 +2,6 @@ import { Service } from 'egg'
 
 class ItemService extends Service {
 
-  // 获取项目信息
-  // public async getItem(params) {
-  //   const { ctx } = this;
-  //   try {
-  //     const results = await ctx.model.Item.findOne({ workspaceId: params.workspaceId });
-  //     return results;
-  //   } catch (error) {
-  //     return {
-  //       code: 500,
-  //       msg: JSON.stringify(error),
-  //     };
-  //   }
-  // }
-
   // 创建项目
   public async create(params) {
     const { ctx } = this;
@@ -75,35 +61,34 @@ class ItemService extends Service {
   //   }
   // }
 
-  // private updateHelper(params) {
-  //   const updateParams = {};
-  //   Object.keys(params).forEach(key => {
-  //     if (key === 'name') {
-  //       updateParams['name'] = params[key];
-  //     };
+  private updateHelper(params) {
+    const updateParams = {};
+    Object.keys(params).forEach(key => {
+      if (key === 'name') {
+        updateParams['name'] = params[key];
+      };
 
-  //     if (Object.keys(updateParams).length > 0) {
-  //       updateParams['updateAt'] = Date.now();
-  //     }
-  //   });
-
-  //   return updateParams;
-  // }
+      if (Object.keys(updateParams).length > 0) {
+        updateParams['updateAt'] = Date.now();
+      }
+    });
+    return updateParams;
+  }
 
   // 更新项目
-  // public async update(params) {
-  //   const { ctx } = this;
-  //   try {
-  //     const results = await ctx.model.Item.updateOne({ workspaceId: params.workspaceId }, {
-  //       $set: this.updateHelper(params)
-  //     });
-  //     return results;
-  //   } catch (err) {
-  //     return {
-  //       code: 500,
-  //       msg: JSON.stringify(err),
-  //     };
-  //   }
-  // }
+  public async update(params) {
+    const { ctx } = this;
+    try {
+      const results = await ctx.model.Item.updateOne({ itemId: params.itemId }, {
+        $set: this.updateHelper(params)
+      });
+      return results;
+    } catch (err) {
+      return {
+        code: 500,
+        msg: JSON.stringify(err),
+      };
+    }
+  }
 }
 export default ItemService;

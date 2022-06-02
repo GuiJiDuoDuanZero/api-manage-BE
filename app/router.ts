@@ -60,6 +60,16 @@ export default (app: Application) => {
   router.get('/v0/workspace/item/list', middleware.tokenHandler(), controller.item.getItemList);
 
   /**
+   * @desc 更新项目列表
+   */
+  router.put('/v0/workspace/item/update', middleware.tokenHandler(), controller.item.updateItem);
+
+  /**
+   * @desc 删除项目列表
+   */
+  // router.delete('/v0/workspace/item/delete', middleware.tokenHandler(), controller.item.deleteItem);
+
+  /**
    * @desc 获取项目详情
    */
    router.get('/v0/workspace/item/detail', middleware.tokenHandler(), controller.item.getItemDetail);

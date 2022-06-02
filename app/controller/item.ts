@@ -21,6 +21,23 @@ class Item extends Controller {
     }
   }
 
+  // private vDelete() {
+  //   return {
+  //     itemId: {type: 'string', required: true } 
+  //   }
+  // }
+
+  private vUpdate() {
+    return {
+      itemId: {
+        type: 'string', required: true
+      },
+      name: {
+        type: 'string', required: false
+      }
+    }
+  }
+
   public async create() {
     const { ctx } = this;
     try{
@@ -129,14 +146,29 @@ class Item extends Controller {
     }
   }
 
+  /**
+   * @desc 更新项目
+   */
+   public async updateItem() {
+    const { ctx } = this;
+    try {
+      const params = { ...ctx.userInfo, ...ctx.request.body };
+      ctx.validate(this.vUpdate(), params);
+      await ctx.service.item.update(params);
+      // console.log('newItem:',newItem)
+      ctx.body = {
+        msg: `更新工作区${params.name}成功`,
+        code:0,
+        itemId:params.itemId
+      }
+    } catch (error) {
+      ctx.body = {
+        msg: '服务器错误'
+      }
+    }
+  }
 
-            // (list as any[]).map(item => {
-            //   return {
-            //     workspaceId:item.workspaceId,
-            //     itemId: item.itemId,
-            //     name: item.name
-            //   }
-            // })
+
 
 }
 
