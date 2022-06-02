@@ -9,16 +9,17 @@ class Item extends Controller {
       workspaceId: { type: 'string', required: true }
     }
   }
+  private vGetList() {
+    return {
+      workspaceId: { type: 'string', required: true }
+    }
+  }
 
   public async create() {
     const { ctx } = this;
     try{
       ctx.userInfo.ownerUid = ctx.userInfo.uid;
       delete ctx.userInfo.uid
-
-      // ctx.body = {
-      //   msg: '111',
-      // }
       const params = { ...ctx.request.body, ...ctx.userInfo };
       ctx.validate(this.vCreate(), params);
 
@@ -46,6 +47,44 @@ class Item extends Controller {
       }
     }
   }
+
+  /**
+   * @desc 获取项目列表
+   */
+   public async getItemList() {
+    const { ctx } = this;
+    try {
+      const query = ctx.request.query;
+      // console.log('params24:',query)
+      ctx.validate(this.vGetList(), query);
+      const itemList = await ctx.service.item.getList(query);
+      if (!itemList.hasOwnProperty('code')) {
+        ctx.body = {
+          msg: '获取项目列表成功',
+          code: 0,
+          data: {
+            itemList: (itemList as any[]).map(item => {
+              return {
+                itemId: item.itemId,
+                name: item.name
+              }
+            })
+          }
+        };
+        return;
+      }
+      ctx.body = {
+        msg: '获取项目列表失败',
+      }
+    } catch (error) {
+      ctx.body = {
+        msg: '服务器错误'
+      }
+    }
+  }
 }
+
+
+
 
 export default Item;

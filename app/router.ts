@@ -53,5 +53,10 @@ export default (app: Application) => {
    * @desc 创建项目
    */
   router.post('/v0/workspace/item/create', middleware.tokenHandler(), controller.item.create);
+  
+  /**
+   * @desc 获取项目列表
+   */
+  router.get('/v0/workspace/item/list', middleware.tokenHandler(), controller.item.getItemList);
 };
 

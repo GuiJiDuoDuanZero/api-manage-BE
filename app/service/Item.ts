@@ -20,9 +20,7 @@ class ItemService extends Service {
   public async create(params) {
     const { ctx } = this;
     try {
-      console.log('params24:',params)
       const results = await ctx.model.Item.create(Object.assign({}, params));
-      console.log('results24:',results)
       return results;
     } catch (err) {
       console.log('err:',err)
@@ -34,18 +32,20 @@ class ItemService extends Service {
   }
 
   // 获取项目列表
-  // public async getList(params) {
-  //   const { ctx } = this;
-  //   try {
-  //     const results = await ctx.model.Item.find({ ownerUid: params.uid });
-  //     return results;
-  //   } catch (err) {
-  //     return {
-  //       code: 500,
-  //       msg: JSON.stringify(err),
-  //     };
-  //   }
-  // }
+  public async getList(params) {
+    const { ctx } = this;
+    try {
+      // console.log('params24:',params)
+      const results = await ctx.model.Item.find(params);
+      // console.log('results24:',results)
+      return results;
+    } catch (err) {
+      return {
+        code: 500,
+        msg: JSON.stringify(err),
+      };
+    }
+  }
 
   // 删除项目
   // public async delete(params) {
