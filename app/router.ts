@@ -67,7 +67,7 @@ export default (app: Application) => {
   /**
    * @desc 删除项目列表
    */
-  // router.delete('/v0/workspace/item/delete', middleware.tokenHandler(), controller.item.deleteItem);
+  router.delete('/v0/workspace/item/delete', middleware.tokenHandler(), controller.item.deleteItem);
 
   /**
    * @desc 获取项目详情

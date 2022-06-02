@@ -35,9 +35,7 @@ class ItemService extends Service {
   public async getDetail(params) {
     const { ctx } = this;
     try {
-      console.log('params24:',params)
       const results = await ctx.model.Item.findOne(params);
-      console.log('results24:',results)
       return results;
     } catch (err) {
       return {
@@ -48,18 +46,20 @@ class ItemService extends Service {
   }
 
   // 删除项目
-  // public async delete(params) {
-  //   const { ctx } = this;
-  //   try {
-  //     const results = await ctx.model.Item.deleteOne({ workspaceId: params.workspaceId });
-  //     return results;
-  //   } catch (err) {
-  //     return {
-  //       code: 500,
-  //       msg: JSON.stringify(err),
-  //     };
-  //   }
-  // }
+  public async delete(params) {
+    const { ctx } = this;
+    try {
+      // console.log('params24:',params)
+      const results = await ctx.model.Item.deleteOne({ itemId: params.itemId });
+      // console.log('results24:',results)
+      return results;
+    } catch (err) {
+      return {
+        code: 500,
+        msg: JSON.stringify(err),
+      };
+    }
+  }
 
   private updateHelper(params) {
     const updateParams = {};
