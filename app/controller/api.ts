@@ -14,9 +14,8 @@ class Api extends Controller {
   }
   private vGetList() {
     return {
-      workspaceId: { type: 'string', required: true }
-      
-    //   : { type: 'string', required: true },
+        itemId: { type: 'string', required: true },
+        catId: { type: 'string', required: true },
     }
   }
 
@@ -39,6 +38,7 @@ class Api extends Controller {
                 apiId: apiInfo._id,
                 title: apiInfo.title,
                 catId:apiInfo.catId,
+                itemId:apiInfo.itemId,
                 method: apiInfo.method,
                 path: apiInfo.path,
                 status: apiInfo.status,
@@ -63,23 +63,25 @@ class Api extends Controller {
   /**
    * @desc 获取接口列表
    */
-   public async getApiList() {
+   public async getList() {
     const { ctx } = this;
     try {
       const query = ctx.request.query;
+        // console.log('params24:',query)
       ctx.validate(this.vGetList(), query);
       const apiList = await ctx.service.api.getList(query);
+        // console.log('apiList:',apiList)
       if (!apiList.hasOwnProperty('code')) {
         ctx.body = {
           msg: '获取接口列表成功',
           code: 0,
-          data: {
-            apiList: (apiList as any[]).map(item => {
-              return {
-                apiId: item.apiId,
-                name: item.name
-              }
-            })
+          data: {apiList
+            // apiList: (apiList as any[]).map(item => {
+            //   return {
+            //     apiId: item.apiId,
+            //     name: item.name
+            //   }
+            // })
           }
         };
         return;

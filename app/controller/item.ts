@@ -113,9 +113,34 @@ class Item extends Controller {
       // console.log('params24:',query)
       const itemDetail= await ctx.service.item.getDetail(query);
       const ClassList= await ctx.service.item.getClassList(query);
-      // console.log('ClassList:',ClassList)
+      // const apiList = await ctx.service.api.getList({catId:query._id,itemId:query.itemId});
+      // console.log('apiList:',apiList)
       // const classList= await ctx.service.item.getDetail(query);
+
+      // let apiList=[]
+      // let apiList
       if (!itemDetail.hasOwnProperty('code')) {
+        // let newMatchInfo
+        // Promise.all( 
+        // newMatchInfo =  (ClassList as any[]).map(async item => {
+        //     console.log('item0:',item)
+        //    await ctx.service.api.getList({catId:item._id,itemId:item.itemId}).then(res => {
+        //     console.log('res:',res)
+        //     item.apiList=res
+        //   });
+        //   console.log('item:',item)
+        //   return item;
+        // })
+        // )
+        // console.log('newMatchInfo1:',newMatchInfo)
+        // newMatchInfo = await Promise.all(newMatchInfo);
+        // console.log('newMatchInfo2:',newMatchInfo)
+        // return this.success({
+        //   data: newMatchInfo,
+        // });
+        // console.log('newMatchInfo3:',newMatchInfo)
+
+        const arrayNew: any[] = [];
         ctx.body = {
           msg: '获取项目详情成功',
           code: 0,
@@ -125,17 +150,44 @@ class Item extends Controller {
               itemId:itemDetail.itemId,
               name:itemDetail.name,
             },
-            // list:ClassList
-            list: (ClassList as any[]).map(item => {
-              return {
-                catId: item._id,
-                workspaceId: item.workspaceId,
-                itemId:item.itemId,
-                className: item.className,
-                classRemark: item.classRemark,
-                apiList:[]
-              }
+            // list:{}
+            
+            list: (ClassList as any[]).map(  item => {
+              console.log('{catId:item._id,itemId:item.itemId}:',{catId:item._id,itemId:item.itemId})
+              // let apiList = await ctx.service.api.getList({catId:item._id,itemId:item.itemId}).then(res => {
+                item.insert({sex:'男'})
+              console.log('item---:',item)
+                // item.apiList = {}
+                // item.apiList = res
+                arrayNew.push(Object.assign(item,{sex:'男'}))
+                // const results = await ctx.model.Api.create(Object.assign({}, params));
+                console.log('arrayNew---:',arrayNew)
+                // return Object.assign(item,{apiList: 1})
+                // return 1
+
+                // console.log('item---:',item)
+                //   return {
+                //   catId: item._id,
+                //   workspaceId: item.workspaceId,
+                //   itemId:item.itemId,
+                //   className: item.className,
+                //   classRemark: item.classRemark,
+                //   apiList:item.apiList
+                // }
+              // });
+              // item.apiList=apiList
+              // resolve(1)
+              // return 1
+              // return {
+              //   catId: item._id,
+              //   workspaceId: item.workspaceId,
+              //   itemId:item.itemId,
+              //   className: item.className,
+              //   classRemark: item.classRemark,
+              //   apiList:[]
+              // }
             })
+
           }
         };
         return;
