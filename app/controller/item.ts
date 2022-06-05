@@ -120,28 +120,7 @@ class Item extends Controller {
       // let apiList=[]
       // let apiList
       if (!itemDetail.hasOwnProperty('code')) {
-        // let newMatchInfo
-        // Promise.all( 
-        // newMatchInfo =  (ClassList as any[]).map(async item => {
-        //     console.log('item0:',item)
-        //    await ctx.service.api.getList({catId:item._id,itemId:item.itemId}).then(res => {
-        //     console.log('res:',res)
-        //     item.apiList=res
-        //   });
-        //   console.log('item:',item)
-        //   return item;
-        // })
-        // )
-        // console.log('newMatchInfo1:',newMatchInfo)
-        // newMatchInfo = await Promise.all(newMatchInfo);
-        // console.log('newMatchInfo2:',newMatchInfo)
-        // return this.success({
-        //   data: newMatchInfo,
-        // });
-        // console.log('newMatchInfo3:',newMatchInfo)
-
-        // const arrayNew: any[] = [];
-        ctx.body = {
+        ctx.body ={
           msg: '获取项目详情成功',
           code: 0,
           data: {
@@ -150,16 +129,24 @@ class Item extends Controller {
               itemId:itemDetail.itemId,
               name:itemDetail.name,
             },
-            list:(ClassList as any[]).map(item => {
+            list:await Promise.all((ClassList as any[]).map(async item => {
+              let apiList = await ctx.service.api.getList({catId:item._id,itemId:item.itemId})
+              // console.log('apiList---:',apiList);
+              // console.log('item---:',item)
+              item.apiList = apiList;
               return {
-                  catId: item._id,
-                  workspaceId: item.workspaceId,
-                  itemId:item.itemId,
-                  className: item.className,
-                  classRemark: item.classRemark,
-                  apiList:[]
-                }
-            })
+                catId: item._id,
+                workspaceId: item.workspaceId,
+                itemId:item.itemId,
+                className: item.className,
+                classRemark: item.classRemark,
+                apiList:item.apiList 
+              }
+              // return(async ()=>{
+                
+              // })();
+              
+            }))
             
             // list: (ClassList as any[]).map(  item => {
             //   console.log('{catId:item._id,itemId:item.itemId}:',{catId:item._id,itemId:item.itemId})
