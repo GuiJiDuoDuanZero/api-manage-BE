@@ -132,7 +132,8 @@ class Item extends Controller {
                 workspaceId: item.workspaceId,
                 itemId:item.itemId,
                 className: item.className,
-                classRemark: item.classRemark
+                classRemark: item.classRemark,
+                apiList:[]
               }
             })
           }

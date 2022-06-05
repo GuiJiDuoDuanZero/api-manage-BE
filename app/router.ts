@@ -73,5 +73,10 @@ export default (app: Application) => {
    * @desc 获取项目详情
    */
    router.get('/v0/workspace/item/detail', middleware.tokenHandler(), controller.item.getItemDetail);
+
+   /**
+   * @desc 创建api
+   */
+  router.post('/v0/item/api/create', middleware.tokenHandler(), controller.api.create);
 };
 
