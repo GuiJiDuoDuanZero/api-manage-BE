@@ -110,7 +110,10 @@ class Item extends Controller {
     try {
       const query = ctx.request.query;
       ctx.validate(this.vGetDetail(), query);
+      // console.log('params24:',query)
       const itemDetail= await ctx.service.item.getDetail(query);
+      const ClassList= await ctx.service.item.getClassList(query);
+      // console.log('ClassList:',ClassList)
       // const classList= await ctx.service.item.getDetail(query);
       if (!itemDetail.hasOwnProperty('code')) {
         ctx.body = {
@@ -122,12 +125,16 @@ class Item extends Controller {
               itemId:itemDetail.itemId,
               name:itemDetail.name,
             },
-            // classList: (classList as any[]).map(item => {
-            //   return {
-            //     classListId: item.itemId,
-            //     name: item.name
-            //   }
-            // })
+            // list:ClassList
+            list: (ClassList as any[]).map(item => {
+              return {
+                catId: item._id,
+                workspaceId: item.workspaceId,
+                itemId:item.itemId,
+                className: item.className,
+                classRemark: item.classRemark
+              }
+            })
           }
         };
         return;
