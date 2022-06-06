@@ -72,7 +72,7 @@ export default (app: Application) => {
   /**
    * @desc 获取项目详情
    */
-   router.get('/v0/workspace/item/detail', middleware.tokenHandler(), controller.item.getItemDetail);
+  router.get('/v0/workspace/item/detail', middleware.tokenHandler(), controller.item.getItemDetail);
 
    /**
    * @desc 创建api
@@ -82,7 +82,13 @@ export default (app: Application) => {
   /**
    * @desc 获取api列表
    */
-   router.get('/v0/item/api/list', middleware.tokenHandler(), controller.api.getList);
+  router.get('/v0/item/api/list', middleware.tokenHandler(), controller.api.getList);
+
+  /**
+   * @desc 删除api
+   */
+  router.delete('/v0/item/api/delete', middleware.tokenHandler(), controller.api.deleteItem);
+
 
 };
 

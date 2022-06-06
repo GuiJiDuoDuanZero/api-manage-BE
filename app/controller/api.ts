@@ -18,6 +18,11 @@ class Api extends Controller {
         catId: { type: 'string', required: true },
     }
   }
+  private vDelete() {
+    return {
+      _id: {type: 'string', required: true } 
+    }
+  }
 
 
   public async create() {
@@ -96,6 +101,27 @@ class Api extends Controller {
     }
   }
 
+  /**
+   * @desc 删除api，暂时不考虑权限
+   */
+  public async deleteItem() {
+    const { ctx } = this;
+    try {
+      const params = { ...ctx.userInfo, ...ctx.request.body };
+      ctx.validate(this.vDelete(), params);
+
+      await ctx.service.api.delete(params);
+      ctx.body = {
+        msg: '删除api成功',
+        code:0
+      }
+    } catch (error) {
+      ctx.body = {
+        msg: '服务器错误',
+        error:error
+      }
+    }
+  }
 
 
 }

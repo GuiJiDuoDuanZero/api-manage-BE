@@ -223,7 +223,7 @@ class Item extends Controller {
   /**
    * @desc 删除项目，暂时不考虑权限
    */
-   public async deleteItem() {
+  public async deleteItem() {
     const { ctx } = this;
     try {
       const params = { ...ctx.userInfo, ...ctx.request.body };
