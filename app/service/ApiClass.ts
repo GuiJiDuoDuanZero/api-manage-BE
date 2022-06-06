@@ -16,6 +16,20 @@ class ApiClass extends Service {
       }
     }
   }
+
+  // 获取项目下的分类列表
+  public async getClassList(params) {
+    const { ctx } = this;
+    try {
+      const results = await ctx.model.Class.find(params);
+      return results;
+    } catch (err) {
+      return {
+        code: 500,
+        msg: JSON.stringify(err),
+      };
+    }
+  }
 }
 
 export default ApiClass;

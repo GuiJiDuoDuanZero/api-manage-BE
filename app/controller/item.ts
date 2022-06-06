@@ -112,7 +112,7 @@ class Item extends Controller {
       ctx.validate(this.vGetDetail(), query);
       // console.log('params24:',query)
       const itemDetail= await ctx.service.item.getDetail(query);
-      const ClassList= await ctx.service.item.getClassList(query);
+      const ClassList= await ctx.service.apiClass.getClassList(query);
       // const apiList = await ctx.service.api.getList({catId:query._id,itemId:query.itemId});
       // console.log('apiList:',apiList)
       // const classList= await ctx.service.item.getDetail(query);
