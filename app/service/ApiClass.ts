@@ -29,6 +29,19 @@ class ApiClass extends Service {
       }
     }
   }
+
+  public async updateApiClass(params, updateInfo) {
+    const { ctx } = this;
+    try {
+      const result = await ctx.model.Class.updateOne({ _id: params.classId }, { $set: { ...updateInfo, updateAt: Date.now() } });
+      return result;
+    } catch (error) {
+      return {
+        code: 500,
+        msg: JSON.stringify(error)
+      }
+    }
+  }
 }
 
 export default ApiClass;
