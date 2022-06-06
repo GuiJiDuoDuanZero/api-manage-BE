@@ -30,6 +30,23 @@ class ApiClass extends Service {
       };
     }
   }
+
+  // 删除api
+  public async delete(params) {
+    const { ctx } = this;
+    try {
+      // console.log('params24:',params)
+      const results = await ctx.model.Class.deleteOne({ _id: params._id });
+      // console.log('results24:',results)
+      return results;
+    } catch (err) {
+      return {
+        code: 500,
+        msg: JSON.stringify(err),
+      };
+    }
+  }
+
 }
 
 export default ApiClass;

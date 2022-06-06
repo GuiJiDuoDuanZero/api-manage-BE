@@ -50,6 +50,11 @@ export default (app: Application) => {
   router.post('/v0/workspace/item/class/create', middleware.tokenHandler(), controller.apiClass.create);
 
   /**
+   * @desc 删除接口分类
+   */
+   router.delete('/v0/workspace/item/class/delete', middleware.tokenHandler(), controller.apiClass.deleteItem);
+
+  /**
    * @desc 创建项目
    */
   router.post('/v0/workspace/item/create', middleware.tokenHandler(), controller.item.create);
@@ -65,7 +70,7 @@ export default (app: Application) => {
   router.put('/v0/workspace/item/update', middleware.tokenHandler(), controller.item.updateItem);
 
   /**
-   * @desc 删除项目列表
+   * @desc 删除项目
    */
   router.delete('/v0/workspace/item/delete', middleware.tokenHandler(), controller.item.deleteItem);
 

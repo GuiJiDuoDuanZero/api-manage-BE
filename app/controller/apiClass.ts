@@ -12,6 +12,12 @@ class ApiClass extends Controller {
     }
   }
 
+  private vDelete() {
+    return {
+      _id: {type: 'string', required: true } 
+    }
+  }
+
   public async create() {
     const { ctx } = this;
     try {
@@ -48,6 +54,28 @@ class ApiClass extends Controller {
       ctx.status = 500
       ctx.body = {
         msg: 'create api class error'
+      }
+    }
+  }
+
+  /**
+   * @desc 删除分类，暂时不考虑权限
+   */
+   public async deleteItem() {
+    const { ctx } = this;
+    try {
+      const params = { ...ctx.userInfo, ...ctx.request.body };
+      ctx.validate(this.vDelete(), params);
+      // console.log('params69:',params)
+      await ctx.service.apiClass.delete(params);
+      ctx.body = {
+        msg: '删除api成功',
+        code:0
+      }
+    } catch (error) {
+      ctx.body = {
+        msg: '服务器错误',
+        error:error
       }
     }
   }
