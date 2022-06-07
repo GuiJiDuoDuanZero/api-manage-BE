@@ -94,6 +94,11 @@ export default (app: Application) => {
    */
   router.delete('/v0/item/api/delete', middleware.tokenHandler(), controller.api.deleteItem);
 
+  /**
+   * @desc 获取api详情
+   */
+   router.get('/v0/item/api/detail', middleware.tokenHandler(), controller.api.getDetail);
+
 
 };
 

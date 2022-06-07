@@ -18,6 +18,11 @@ class Api extends Controller {
         catId: { type: 'string', required: true },
     }
   }
+  private vGetDetail() {
+    return {
+      _id: { type: 'string', required: true }
+    }
+  }
   // private vDelete() {
   //   return {
   //     _id: {type: 'string', required: true } 
@@ -125,6 +130,35 @@ class Api extends Controller {
     }
   }
 
+  /**
+   * @desc 获取api详情
+   */
+   public async getDetail() {
+    const { ctx } = this;
+    try {
+      const query = ctx.request.query;
+      // console.log('query111:',query)
+      ctx.validate(this.vGetDetail(), query);
+      const apiDetail= await ctx.service.api.getDetail(query);
+      if (!apiDetail.hasOwnProperty('code')) {
+        ctx.body ={
+          msg: '获取api详情成功',
+          code: 0,
+          data: {
+            apiDetail
+          }
+        };
+        return;
+      }
+      ctx.body = {
+        msg: '获取项目详情失败',
+      }
+    } catch (error) {
+      ctx.body = {
+        msg: '服务器错误'
+      }
+    }
+  }
 
 }
 

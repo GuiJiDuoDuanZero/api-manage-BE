@@ -48,5 +48,21 @@ class ApiService extends Service {
     }
   }
 
+  // 获取api详情
+  public async getDetail(params) {
+    // console.log('53:',params)
+    const { ctx } = this;
+    try {
+      const results = await ctx.model.Api.findOne(params);
+      // console.log('57:',results)
+      return results;
+    } catch (err) {
+      return {
+        code: 500,
+        msg: JSON.stringify(err),
+      };
+    }
+  }
+
 }
 export default ApiService;
