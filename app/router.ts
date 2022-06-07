@@ -99,6 +99,11 @@ export default (app: Application) => {
    */
    router.get('/v0/item/api/detail', middleware.tokenHandler(), controller.api.getDetail);
 
+   /**
+   * @desc 更新api
+   */
+  router.put('/v0/item/api/update', middleware.tokenHandler(), controller.api.update);
+
 
 };
 

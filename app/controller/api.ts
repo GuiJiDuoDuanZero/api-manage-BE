@@ -23,6 +23,11 @@ class Api extends Controller {
       _id: { type: 'string', required: true }
     }
   }
+  private vUpdate() {
+    return {
+      _id: { type: 'string', required: true }
+    }
+  }
   // private vDelete() {
   //   return {
   //     _id: {type: 'string', required: true } 
@@ -85,14 +90,7 @@ class Api extends Controller {
         ctx.body = {
           msg: '获取接口列表成功',
           code: 0,
-          data: {apiList
-            // apiList: (apiList as any[]).map(item => {
-            //   return {
-            //     apiId: item.apiId,
-            //     name: item.name
-            //   }
-            // })
-          }
+          data: {apiList}
         };
         return;
       }
@@ -159,6 +157,29 @@ class Api extends Controller {
       }
     }
   }
+  /**
+   * @desc 更新项目
+   */
+   public async update() {
+    const { ctx } = this;
+    try {
+      const params = {...ctx.request.body };
+      ctx.validate(this.vUpdate(), params);
+      let results=await ctx.service.api.update(params);
+      // console.log('results:',results)
+      ctx.body = {
+        msg: `更新api成功`,
+        code:0,
+        _id:params._id,
+        results:results
+      }
+    } catch (error) {
+      ctx.body = {
+        msg: '服务器错误'
+      }
+    }
+  }
+
 
 }
 

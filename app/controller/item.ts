@@ -30,7 +30,7 @@ class Item extends Controller {
   private vUpdate() {
     return {
       itemId: {type: 'string', required: true},
-      name: {type: 'string', required: false}
+      name: {type: 'string', required: true}
     }
   }
 
