@@ -51,7 +51,7 @@ class ItemService extends Service {
     const { ctx } = this;
     try {
       // console.log('params24:',params)
-      const results = await ctx.model.Item.deleteOne({ itemId: params.itemId });
+      const results = await ctx.model.Item.deleteMany(params);
       // console.log('results24:',results)
       return results;
     } catch (err) {

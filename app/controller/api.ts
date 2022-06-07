@@ -18,11 +18,11 @@ class Api extends Controller {
         catId: { type: 'string', required: true },
     }
   }
-  private vDelete() {
-    return {
-      _id: {type: 'string', required: true } 
-    }
-  }
+  // private vDelete() {
+  //   return {
+  //     _id: {type: 'string', required: true } 
+  //   }
+  // }
 
 
   public async create() {
@@ -107,13 +107,15 @@ class Api extends Controller {
   public async deleteItem() {
     const { ctx } = this;
     try {
-      const params = { ...ctx.userInfo, ...ctx.request.body };
-      ctx.validate(this.vDelete(), params);
-
-      await ctx.service.api.delete(params);
+      const params = {...ctx.request.body };
+      // ctx.validate(params);
+      // console.log('params111:',params)
+      let results=await ctx.service.api.delete(params);
+      // console.log('results111:',results)
       ctx.body = {
         msg: '删除api成功',
-        code:0
+        code:0,
+        results
       }
     } catch (error) {
       ctx.body = {

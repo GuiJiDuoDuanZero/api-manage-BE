@@ -35,9 +35,10 @@ class ApiService extends Service {
   public async delete(params) {
     const { ctx } = this;
     try {
-      // console.log('params24:',params)
-      const results = await ctx.model.Api.deleteOne({ _id: params._id });
-      // console.log('results24:',results)
+      // console.log('apiparams24:',params)
+      // const results = await ctx.model.Api.deleteOne({ _id: params._id });
+      const results = await ctx.model.Api.deleteMany(params);
+      // console.log('rapiesults24:',results)
       return results;
     } catch (err) {
       return {

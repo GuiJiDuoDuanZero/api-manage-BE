@@ -119,9 +119,10 @@ class Workspace extends Controller {
       const params = { ...ctx.userInfo, ...ctx.request.body };
       ctx.validate(this.vDelete(), params);
 
-      await ctx.service.workspace.delete(params);
+      let results=await ctx.service.workspace.delete(params);
       ctx.body = {
         msg: '删除工作区成功',
+        results
       }
     } catch (error) {
       ctx.body = {

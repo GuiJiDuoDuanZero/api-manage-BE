@@ -36,7 +36,9 @@ class ApiClass extends Service {
     const { ctx } = this;
     try {
       // console.log('params24:',params)
-      const results = await ctx.model.Class.deleteOne({ _id: params._id });
+      // const results = await ctx.model.Class.deleteOne({ _id: params._id });
+      const results = await ctx.model.Class.deleteMany(params);
+      // const results = await ctx.model.Class.deleteMany({ _id: '629db42806686b23d8b2d4d1'},{ _id: '629dbf74f0f86c7fa53692ec'});
       // console.log('results24:',results)
       return results;
     } catch (err) {

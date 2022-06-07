@@ -226,13 +226,21 @@ class Item extends Controller {
   public async deleteItem() {
     const { ctx } = this;
     try {
-      const params = { ...ctx.userInfo, ...ctx.request.body };
+      const params = {  ...ctx.request.body };
       ctx.validate(this.vDelete(), params);
 
-      await ctx.service.item.delete(params);
+      let resultsItem=await ctx.service.item.delete(params);
+      // console.log('item-results111:',resultsItem)
+      let resultsApiClass=await ctx.service.apiClass.delete(params);
+      // console.log('apiClass-results111:',resultsApiClass)
+      let resultsApi=await ctx.service.api.delete(params);
+      // console.log('apiClass-results111:',resultsApi)
       ctx.body = {
         msg: '删除项目成功',
-        code:0
+        code:0,
+        resultsItem,
+        resultsApiClass,
+        resultsApi
       }
     } catch (error) {
       ctx.body = {

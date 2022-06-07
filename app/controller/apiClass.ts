@@ -12,11 +12,11 @@ class ApiClass extends Controller {
     }
   }
 
-  private vDelete() {
-    return {
-      _id: {type: 'string', required: true } 
-    }
-  }
+  // private vDelete() {
+  //   return {
+  //     _id: {type: 'string', required: true } 
+  //   }
+  // }
 
   public async create() {
     const { ctx } = this;
@@ -64,14 +64,32 @@ class ApiClass extends Controller {
    public async deleteItem() {
     const { ctx } = this;
     try {
-      const params = { ...ctx.userInfo, ...ctx.request.body };
-      ctx.validate(this.vDelete(), params);
+      const params = { ...ctx.request.body };
+      // ctx.validate(this.vDelete(), params);
       // console.log('params69:',params)
-      await ctx.service.apiClass.delete(params);
+      let results=await ctx.service.apiClass.delete(params);
+      // console.log('apiClass-results111:',results)
       ctx.body = {
         msg: '删除api成功',
-        code:0
+        code:0,
+        results
       }
+      // results['deletedCount']=parseInt(results['deletedCount'])
+      // console.log('results111:',results['deletedCount'])
+      // // 这里为什么报错呢？error TS2339: Property 'deletedCount' does not exist on type '({ ok?: number | undefined; n?: number | undefined; } & { deletedCount?: number | undefined; }) | { code: number; msg: string; }'. Property 'deletedCount' does not exist on type '{ code: number; msg: string; }'.
+      // if(results&&results['deletedCount']&&results['deletedCount']=='0'){
+      //   // ctx.body = {
+      //   //   msg: '删除api失败，可能是所传数据错误',
+      //   //   code:40006
+      //   // }
+      //   console.log('r0:',results['deletedCount'])
+      // }else{
+      //   // ctx.body = {
+      //   //   msg: '删除api成功',
+      //   //   code:0
+      //   // }
+      //   console.log('r1:',results['deletedCount'])
+      // }
     } catch (error) {
       ctx.body = {
         msg: '服务器错误',
