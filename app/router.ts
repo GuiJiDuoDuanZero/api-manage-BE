@@ -58,5 +58,58 @@ export default (app: Application) => {
    * @desc 修改接口分类接口
    */
   router.put('/v0/workspace/item/class/update', middleware.tokenHandler(), controller.apiClass.update)
+  //  router.delete('/v0/workspace/item/class/delete', middleware.tokenHandler(), controller.apiClass.deleteItem);
+
+  /**
+   * @desc 创建项目
+   */
+  router.post('/v0/workspace/item/create', middleware.tokenHandler(), controller.item.create);
+
+  /**
+   * @desc 获取项目列表
+   */
+  router.get('/v0/workspace/item/list', middleware.tokenHandler(), controller.item.getItemList);
+
+  /**
+   * @desc 更新项目列表
+   */
+  router.put('/v0/workspace/item/update', middleware.tokenHandler(), controller.item.updateItem);
+
+  /**
+   * @desc 删除项目
+   */
+  router.delete('/v0/workspace/item/delete', middleware.tokenHandler(), controller.item.deleteItem);
+
+  /**
+   * @desc 获取项目详情
+   */
+  router.get('/v0/workspace/item/detail', middleware.tokenHandler(), controller.item.getItemDetail);
+
+  /**
+  * @desc 创建api
+  */
+  router.post('/v0/item/api/create', middleware.tokenHandler(), controller.api.create);
+
+  /**
+   * @desc 获取api列表
+   */
+  router.get('/v0/item/api/list', middleware.tokenHandler(), controller.api.getList);
+
+  /**
+   * @desc 删除api
+   */
+  router.delete('/v0/item/api/delete', middleware.tokenHandler(), controller.api.deleteItem);
+
+  /**
+   * @desc 获取api详情
+   */
+  router.get('/v0/item/api/detail', middleware.tokenHandler(), controller.api.getDetail);
+
+  /**
+  * @desc 更新api
+  */
+  router.put('/v0/item/api/update', middleware.tokenHandler(), controller.api.update);
+
+
 };
 

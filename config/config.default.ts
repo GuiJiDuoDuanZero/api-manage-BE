@@ -42,7 +42,8 @@ export default (appInfo: EggAppInfo) => {
         url: 'mongodb://127.0.0.1:27017/admin',
         options: {
           user: 'admin',
-          pass: '123456'
+          pass: '123456', 
+          useUnifiedTopology: true//避免出现warning
         },
       }
     }

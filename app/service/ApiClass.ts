@@ -42,6 +42,38 @@ class ApiClass extends Service {
       }
     }
   }
+  // 获取项目下的分类列表
+  public async getClassList(params) {
+    const { ctx } = this;
+    try {
+      const results = await ctx.model.Class.find(params);
+      return results;
+    } catch (err) {
+      return {
+        code: 500,
+        msg: JSON.stringify(err),
+      };
+    }
+  }
+
+  // 删除api
+  public async delete(params) {
+    const { ctx } = this;
+    try {
+      // console.log('params24:',params)
+      // const results = await ctx.model.Class.deleteOne({ _id: params._id });
+      const results = await ctx.model.Class.deleteMany(params);
+      // const results = await ctx.model.Class.deleteMany({ _id: '629db42806686b23d8b2d4d1'},{ _id: '629dbf74f0f86c7fa53692ec'});
+      // console.log('results24:',results)
+      return results;
+    } catch (err) {
+      return {
+        code: 500,
+        msg: JSON.stringify(err),
+      };
+    }
+  }
+
 }
 
 export default ApiClass;
