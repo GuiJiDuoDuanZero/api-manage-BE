@@ -29,6 +29,14 @@ class ApiClass extends Controller {
       classRemark: { type: 'string', required: false }
     }
   }
+
+  private vGet() {
+    return {
+      workspaceId: { type: 'string', required: true },
+      itemId: { type: 'string', required: true },
+      classId: { type: 'string', required: true },
+    }
+  }
   // private vDelete() {
   //   return {
   //     _id: {type: 'string', required: true }
@@ -156,6 +164,36 @@ class ApiClass extends Controller {
       }
     }
   }
+
+  public async getClassInfo() {
+    const { ctx } = this;
+    const params = { ...ctx.request.body };
+    try {
+      ctx.validate(this.vDelete(), params);
+      // 校验工作区
+      const dbWorkspace = await ctx.service.workspace.getWorkspace(params);
+      if (dbWorkspace?.hasOwnProperty('code') || !dbWorkspace) {
+        return ctx.body = {
+          msg: '工作区不存在'
+        }
+      }
+      // 校验项目
+      // 暂无
+
+      /**
+       * @desc 两种方案
+       * 1. 一次性把该类别的相关的所有数据全部查出来，然后再根据数据进行组装
+       * 优点：只需要查询2次数据库 一次查询该项目下面的所有类别，一次查询该项目下的所有接口
+       * 缺点：逻辑耦合，无法进行拆分和复用
+       * 2. 先把所有的类别查出来，再依据类别查询对应的接口
+       * 优点：逻辑拆分，可以进行复用
+       * 缺点：有多少类别就需要查询多少次接口的数据库需要查询1 + n次数据库 或者 n + n次
+       */
+    } catch (error) {
+
+    }
+  }
+
   /**
    * @desc 删除分类，暂时不考虑权限
    */
