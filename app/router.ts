@@ -1,8 +1,8 @@
 import { Application } from 'egg';
-import { EMAIL_REDIS_KEY_TYPE } from './chore/email.constant';
+import routes from './routes';
 
 export default (app: Application) => {
-  const { controller, router, middleware } = app;
+  const { controller, router } = app;
 
   /**
    * @desc 发送邮件
@@ -10,106 +10,8 @@ export default (app: Application) => {
   router.get('/v0/email', controller.email.sendEmail);
 
   /**
-   * @desc 注册
+   * @desc 业务接口拆分
    */
-  router.post('/v0/user/register', middleware.emailCodeCheck(EMAIL_REDIS_KEY_TYPE.register), controller.user.register);
-
-  /**
-   * @desc 登录
-   */
-  router.post('/v0/user/login', controller.user.login);
-
-  /**
-   * @desc 忘记密码
-   */
-  router.put('/v0/user/forget', middleware.emailCodeCheck(EMAIL_REDIS_KEY_TYPE.forget), controller.user.forget);
-
-  /**
-   * @desc 创建工作区
-   */
-  router.post('/v0/workspace/create', middleware.tokenHandler(), controller.workspace.create);
-
-  /**
-   * @desc 获取工作区列表
-   */
-  router.get('/v0/workspace/list', middleware.tokenHandler(), controller.workspace.getWorkspaceList);
-
-  /**
-   * @desc 删除工作区
-   */
-  router.delete('/v0/workspace/delete', middleware.tokenHandler(), controller.workspace.deleteWorkspace);
-
-  /**
-   * @desc 更新工作区
-   */
-  router.put('/v0/workspace/update', middleware.tokenHandler(), controller.workspace.updateWorkspace);
-
-  /**
-   * @desc 创建接口分类
-   */
-  router.post('/v0/workspace/item/class/create', middleware.tokenHandler(), controller.apiClass.create);
-
-  /**
-   * @desc 删除接口分类
-   */
-  router.delete('/v0/workspace/item/class/delete', middleware.tokenHandler(), controller.apiClass.delete);
-
-  /**
-   * @desc 修改接口分类接口
-   */
-  router.put('/v0/workspace/item/class/update', middleware.tokenHandler(), controller.apiClass.update)
-  //  router.delete('/v0/workspace/item/class/delete', middleware.tokenHandler(), controller.apiClass.deleteItem);
-
-  /**
-   * @desc 创建项目
-   */
-  router.post('/v0/workspace/item/create', middleware.tokenHandler(), controller.item.create);
-
-  /**
-   * @desc 获取项目列表
-   */
-  router.get('/v0/workspace/item/list', middleware.tokenHandler(), controller.item.getItemList);
-
-  /**
-   * @desc 更新项目列表
-   */
-  router.put('/v0/workspace/item/update', middleware.tokenHandler(), controller.item.updateItem);
-
-  /**
-   * @desc 删除项目
-   */
-  router.delete('/v0/workspace/item/delete', middleware.tokenHandler(), controller.item.deleteItem);
-
-  /**
-   * @desc 获取项目详情
-   */
-  router.get('/v0/workspace/item/detail', middleware.tokenHandler(), controller.item.getItemDetail);
-
-  /**
-  * @desc 创建api
-  */
-  router.post('/v0/item/api/create', middleware.tokenHandler(), controller.api.create);
-
-  /**
-   * @desc 获取api列表
-   */
-  router.get('/v0/item/api/list', middleware.tokenHandler(), controller.api.getList);
-
-  /**
-   * @desc 删除api
-   */
-  router.delete('/v0/item/api/delete', middleware.tokenHandler(), controller.api.deleteItem);
-
-  /**
-   * @desc 获取api详情
-   */
-  router.get('/v0/item/api/detail', middleware.tokenHandler(), controller.api.getDetail);
-
-  /**
-  * @desc 更新api
-  */
-  router.put('/v0/item/api/update', middleware.tokenHandler(), controller.api.update);
-
-
+  routes(app);
 };
 
