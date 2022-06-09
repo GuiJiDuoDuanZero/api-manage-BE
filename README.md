@@ -1,5 +1,9 @@
 # 接口管理平台后端
 
+### 调试方式
+- 参考接口文档
+- npm run dev
+
 ### Development
 
 ```bash

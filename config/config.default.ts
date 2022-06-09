@@ -31,7 +31,7 @@ export default (appInfo: EggAppInfo) => {
   config.redis = {
     client: {
       port: 6379,
-      host: "127.0.0.1",
+      host: "1.15.174.68",
       password: '',
       db: 0
     }
@@ -39,7 +39,7 @@ export default (appInfo: EggAppInfo) => {
 
   config.mongoose = {
       client: {
-        url: 'mongodb://127.0.0.1:27017/admin',
+        url: 'mongodb://1.15.174.68:27017/admin',
         options: {
           user: 'admin',
           pass: '123456', 
