@@ -1,5 +1,5 @@
 import { Application } from "egg";
-import { EMAIL_REDIS_KEY_TYPE } from '../chore/email.constant';
+import { EMAIL_REDIS_KEY_TYPE } from '../chore/constants/email.constant';
 
 export default (app: Application) => {
   const { controller, router, middleware } = app;

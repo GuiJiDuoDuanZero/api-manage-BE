@@ -1,53 +1,12 @@
 import { Controller } from 'egg';
-
+import { vClass, vDelete, vGet, vUpdate } from '../chore/validates/apiClass';
 class ApiClass extends Controller {
-
-  private vClass() {
-    return {
-      workspaceId: { type: 'string', required: true },
-      itemId: { type: 'string', required: true },
-      parentClassId: { type: 'string', required: false },
-      className: { type: 'string', required: true },
-      classRemark: { type: 'string', required: false }
-    }
-  }
-
-  private vDelete() {
-    return {
-      workspaceId: { type: 'string', required: true },
-      itemId: { type: 'string', required: true },
-      classId: { type: 'string', required: true }
-    }
-  }
-
-  private vUpdate() {
-    return {
-      workspaceId: { type: 'string', required: true },
-      itemId: { type: 'string', required: true },
-      classId: { type: 'string', required: true },
-      className: { type: 'string', required: false },
-      classRemark: { type: 'string', required: false }
-    }
-  }
-
-  private vGet() {
-    return {
-      workspaceId: { type: 'string', required: true },
-      itemId: { type: 'string', required: true },
-      classId: { type: 'string', required: true },
-    }
-  }
-  // private vDelete() {
-  //   return {
-  //     _id: {type: 'string', required: true }
-  //   }
-  // }
 
   public async create() {
     const { ctx } = this;
     try {
       const params = ctx.request.body;
-      ctx.validate(this.vClass(), params);
+      ctx.validate(vClass(), params);
 
       // 校验工作区
       const dbWorkspace = await ctx.service.workspace.getWorkspace(params);
@@ -87,7 +46,7 @@ class ApiClass extends Controller {
     const { ctx } = this;
     const params = ctx.request.body;
     try {
-      ctx.validate(this.vDelete(), params);
+      ctx.validate(vDelete(), params);
 
       // 校验工作区
       const dbWorkspace = await ctx.service.workspace.getWorkspace(params);
@@ -122,7 +81,7 @@ class ApiClass extends Controller {
     const { ctx } = this;
     const params = ctx.request.body;
     try {
-      ctx.validate(this.vUpdate(), params);
+      ctx.validate(vUpdate(), params);
 
       // 校验工作区
       const dbWorkspace = await ctx.service.workspace.getWorkspace(params);
@@ -169,7 +128,7 @@ class ApiClass extends Controller {
     const { ctx } = this;
     const params = { ...ctx.request.body };
     try {
-      ctx.validate(this.vDelete(), params);
+      ctx.validate(vGet(), params);
       // 校验工作区
       const dbWorkspace = await ctx.service.workspace.getWorkspace(params);
       if (dbWorkspace?.hasOwnProperty('code') || !dbWorkspace) {

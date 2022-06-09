@@ -1,22 +1,8 @@
 import { Controller } from 'egg';
-import { USERINFO_EXPIRED_TIME } from '../chore/redis.constant';
+import { USERINFO_EXPIRED_TIME } from '../chore/constants/redis.constant';
+import { vUser, vRegister } from '../chore/validates/user';
 
 class UserController extends Controller {
-
-  private vUser() {
-    return {
-      username: { type: 'string', required: true },
-      password: { type: 'string', required: true },
-    }
-  };
-
-  private vRegister() {
-    return {
-      username: { type: 'string', required: true },
-      password: { type: 'string', required: true },
-      email: { type: 'string', required: true }
-    }
-  };
 
   /**
    * 用户注册
@@ -27,7 +13,7 @@ class UserController extends Controller {
     // 接收校验参数
     try {
       const params = ctx.request.body;
-      ctx.validate(this.vRegister(), params);
+      ctx.validate(vRegister(), params);
 
       const userInfo = await ctx.service.user.findEmail(params);
 
@@ -82,7 +68,7 @@ class UserController extends Controller {
 
     try {
       const params = ctx.request.body;
-      ctx.validate(this.vUser(), params);
+      ctx.validate(vUser(), params);
       const dbUser = await ctx.service.user.find(params);
 
       if (!dbUser) {
@@ -125,7 +111,7 @@ class UserController extends Controller {
 
     try {
       const params = ctx.request.body;
-      ctx.validate(this.vRegister(), params);
+      ctx.validate(vRegister(), params);
 
       await ctx.service.user.updatePass(params);
       const dbUser = await ctx.service.user.find(params);

@@ -1,40 +1,8 @@
 import { Controller } from 'egg';
 import { v4 as uuid } from 'uuid';
+import { vCreate, vDelete, vGetList, vUpdate } from '../chore/validates/workspace';
 
 class Workspace extends Controller {
-
-  private vCreate() {
-    return {
-      name: { type: 'string', required: true },
-      private: { type: 'number', required: true },
-      ownerUid: { type: 'string', required: true }
-    }
-  }
-
-  private vGetList() {
-    return {
-      uid: { type: 'string', required: true }
-    }
-  }
-
-  private vDelete() {
-    return {
-      workspaceId: {
-        type: 'string', required: true
-      }
-    }
-  }
-
-  private vUpdate() {
-    return {
-      workspaceId: {
-        type: 'string', required: true
-      },
-      name: {
-        type: 'string', required: false
-      }
-    }
-  }
 
   public async create() {
     const { ctx } = this;
@@ -44,7 +12,7 @@ class Workspace extends Controller {
       delete ctx.userInfo.uid
 
       const params = { ...ctx.request.body, ...ctx.userInfo };
-      ctx.validate(this.vCreate(), params);
+      ctx.validate(vCreate(), params);
 
       params.workspaceId = uuid(params.ownerUid);
 
@@ -78,7 +46,7 @@ class Workspace extends Controller {
     const { ctx } = this;
 
     try {
-      ctx.validate(this.vGetList(), ctx.userInfo);
+      ctx.validate(vGetList(), ctx.userInfo);
       const workspaceList = await ctx.service.workspace.getList(ctx.userInfo);
 
       if (!workspaceList.hasOwnProperty('code')) {
@@ -117,9 +85,9 @@ class Workspace extends Controller {
     const { ctx } = this;
     try {
       const params = { ...ctx.userInfo, ...ctx.request.body };
-      ctx.validate(this.vDelete(), params);
+      ctx.validate(vDelete(), params);
 
-      let results=await ctx.service.workspace.delete(params);
+      let results = await ctx.service.workspace.delete(params);
       ctx.body = {
         msg: '删除工作区成功',
         results
@@ -138,7 +106,7 @@ class Workspace extends Controller {
     const { ctx } = this;
     try {
       const params = { ...ctx.userInfo, ...ctx.request.body };
-      ctx.validate(this.vUpdate(), params);
+      ctx.validate(vUpdate(), params);
 
       await ctx.service.workspace.update(params);
       ctx.body = {

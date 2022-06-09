@@ -1,46 +1,16 @@
 import { Controller } from 'egg';
 import { v4 as uuid } from 'uuid';
+import { vCreate, vUpdate, vGetList, vGetDetail, vDelete } from '../chore/validates/item';
 
 class Item extends Controller {
 
-  private vCreate() {
-    return {
-      name: { type: 'string', required: true },
-      workspaceId: { type: 'string', required: true }
-    }
-  }
-  private vGetList() {
-    return {
-      workspaceId: { type: 'string', required: true }
-    }
-  }
-
-  private vGetDetail() {
-    return {
-      itemId: { type: 'string', required: true }
-    }
-  }
-
-  private vDelete() {
-    return {
-      itemId: {type: 'string', required: true } 
-    }
-  }
-
-  private vUpdate() {
-    return {
-      itemId: {type: 'string', required: true},
-      name: {type: 'string', required: true}
-    }
-  }
-
   public async create() {
     const { ctx } = this;
-    try{
+    try {
       ctx.userInfo.ownerUid = ctx.userInfo.uid;
       delete ctx.userInfo.uid
       const params = { ...ctx.request.body, ...ctx.userInfo };
-      ctx.validate(this.vCreate(), params);
+      ctx.validate(vCreate(), params);
 
       params.itemId = uuid(params.ownerUid);
 
@@ -70,12 +40,12 @@ class Item extends Controller {
   /**
    * @desc 获取项目列表
    */
-   public async getItemList() {
+  public async getItemList() {
     const { ctx } = this;
     try {
       const query = ctx.request.query;
       // console.log('params24:',query)
-      ctx.validate(this.vGetList(), query);
+      ctx.validate(vGetList(), query);
       const itemList = await ctx.service.item.getList(query);
       if (!itemList.hasOwnProperty('code')) {
         ctx.body = {
@@ -105,14 +75,14 @@ class Item extends Controller {
   /**
    * @desc 获取项目详情
    */
-   public async getItemDetail() {
+  public async getItemDetail() {
     const { ctx } = this;
     try {
       const query = ctx.request.query;
-      ctx.validate(this.vGetDetail(), query);
+      ctx.validate(vGetDetail(), query);
       // console.log('params24:',query)
-      const itemDetail= await ctx.service.item.getDetail(query);
-      const ClassList= await ctx.service.apiClass.getClassList(query);
+      const itemDetail = await ctx.service.item.getDetail(query);
+      const ClassList = await ctx.service.apiClass.getClassList(query);
       // const apiList = await ctx.service.api.getList({catId:query._id,itemId:query.itemId});
       // console.log('apiList:',apiList)
       // const classList= await ctx.service.item.getDetail(query);
@@ -120,34 +90,34 @@ class Item extends Controller {
       // let apiList=[]
       // let apiList
       if (!itemDetail.hasOwnProperty('code')) {
-        ctx.body ={
+        ctx.body = {
           msg: '获取项目详情成功',
           code: 0,
           data: {
-            itemDetail: { 
-              workspaceId:itemDetail.workspaceId,
-              itemId:itemDetail.itemId,
-              name:itemDetail.name,
+            itemDetail: {
+              workspaceId: itemDetail.workspaceId,
+              itemId: itemDetail.itemId,
+              name: itemDetail.name,
             },
-            list:await Promise.all((ClassList as any[]).map(async item => {
-              let apiList = await ctx.service.api.getList({catId:item._id,itemId:item.itemId})
+            list: await Promise.all((ClassList as any[]).map(async item => {
+              let apiList = await ctx.service.api.getList({ catId: item._id, itemId: item.itemId })
               // console.log('apiList---:',apiList);
               // console.log('item---:',item)
               item.apiList = apiList;
               return {
                 catId: item._id,
                 workspaceId: item.workspaceId,
-                itemId:item.itemId,
+                itemId: item.itemId,
                 className: item.className,
                 classRemark: item.classRemark,
-                apiList:item.apiList 
+                apiList: item.apiList
               }
               // return(async ()=>{
-                
+
               // })();
-              
+
             }))
-            
+
             // list: (ClassList as any[]).map(  item => {
             //   console.log('{catId:item._id,itemId:item.itemId}:',{catId:item._id,itemId:item.itemId})
             //   // let apiList = await ctx.service.api.getList({catId:item._id,itemId:item.itemId}).then(res => {
@@ -201,17 +171,17 @@ class Item extends Controller {
   /**
    * @desc 更新项目
    */
-   public async updateItem() {
+  public async updateItem() {
     const { ctx } = this;
     try {
       const params = { ...ctx.userInfo, ...ctx.request.body };
-      ctx.validate(this.vUpdate(), params);
+      ctx.validate(vUpdate(), params);
       await ctx.service.item.update(params);
       // console.log('newItem:',newItem)
       ctx.body = {
         msg: `更新项目${params.name}成功`,
-        code:0,
-        itemId:params.itemId
+        code: 0,
+        itemId: params.itemId
       }
     } catch (error) {
       ctx.body = {
@@ -226,18 +196,18 @@ class Item extends Controller {
   public async deleteItem() {
     const { ctx } = this;
     try {
-      const params = {  ...ctx.request.body };
-      ctx.validate(this.vDelete(), params);
+      const params = { ...ctx.request.body };
+      ctx.validate(vDelete(), params);
 
-      let resultsItem=await ctx.service.item.delete(params);
+      let resultsItem = await ctx.service.item.delete(params);
       // console.log('item-results111:',resultsItem)
-      let resultsApiClass=await ctx.service.apiClass.delete(params);
+      let resultsApiClass = await ctx.service.apiClass.delete(params);
       // console.log('apiClass-results111:',resultsApiClass)
-      let resultsApi=await ctx.service.api.delete(params);
+      let resultsApi = await ctx.service.api.delete(params);
       // console.log('apiClass-results111:',resultsApi)
       ctx.body = {
         msg: '删除项目成功',
-        code:0,
+        code: 0,
         resultsItem,
         resultsApiClass,
         resultsApi
