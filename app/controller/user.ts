@@ -1,6 +1,5 @@
 import { Controller } from 'egg';
 import { USERINFO_EXPIRED_TIME } from '../chore/constants/redis.constant';
-import { vUser, vRegister } from '../chore/validates/user';
 
 class UserController extends Controller {
 
@@ -9,24 +8,18 @@ class UserController extends Controller {
    */
   public async register() {
     const { ctx, app } = this;
+    const params = ctx.requestValue;
 
-    // 接收校验参数
     try {
-      const params = ctx.request.body;
-      ctx.validate(vRegister(), params);
-
       const userInfo = await ctx.service.user.findEmail(params);
-
       if (userInfo) {
         ctx.body = {
           msg: '邮箱已经被注册'
         }
         return
       }
-
       // 判断用户名是否重复
       const user = await ctx.service.user.find(params);
-
       if (user) {
         ctx.status = 401;
         ctx.body = {
@@ -55,7 +48,7 @@ class UserController extends Controller {
         }
       };
     } catch (error) {
-      ctx.body = { code: 40001 }
+      ctx.body = { msg: '服务器错误, 注册' }
     }
 
   }
@@ -65,10 +58,8 @@ class UserController extends Controller {
    */
   public async login() {
     const { ctx, app } = this;
-
+    const params = ctx.requestValue;
     try {
-      const params = ctx.request.body;
-      ctx.validate(vUser(), params);
       const dbUser = await ctx.service.user.find(params);
 
       if (!dbUser) {
@@ -99,7 +90,7 @@ class UserController extends Controller {
         }
       };
     } catch (error) {
-      ctx.body = { msg: '登录失败' }
+      ctx.body = { msg: '服务器错误，登录' }
     }
   }
 
@@ -108,11 +99,8 @@ class UserController extends Controller {
    */
   public async forget() {
     const { ctx, app } = this;
-
+    const params = ctx.requestValue;
     try {
-      const params = ctx.request.body;
-      ctx.validate(vRegister(), params);
-
       await ctx.service.user.updatePass(params);
       const dbUser = await ctx.service.user.find(params);
 
@@ -146,7 +134,7 @@ class UserController extends Controller {
         }
       };
     } catch (error) {
-      ctx.body = { msg: '登录失败' }
+      ctx.body = { msg: '服务器异常，忘记密码' }
     }
   }
 }
