@@ -14,7 +14,7 @@ export default (params?) => {
     if (ctx.userInfo) {
       value = { ...value, ...ctx.userInfo };
     };
-
+  
     try {
       ctx.validate(check, value);
       ctx.requestValue = value;

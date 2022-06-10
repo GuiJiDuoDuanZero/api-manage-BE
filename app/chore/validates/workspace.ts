@@ -2,7 +2,7 @@ export const vCreate = () => {
   return {
     name: { type: 'string', required: true },
     private: { type: 'number', required: true },
-    ownerUid: { type: 'string', required: true }
+    uid: { type: 'string', required: true }
   }
 }
 

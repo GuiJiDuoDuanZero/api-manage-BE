@@ -1,6 +1,5 @@
 import { Controller } from 'egg';
 import { v4 as uuid } from 'uuid';
-import { vCreate, vDelete, vGetList, vUpdate } from '../chore/validates/workspace';
 
 class Workspace extends Controller {
 
@@ -8,11 +7,9 @@ class Workspace extends Controller {
     const { ctx } = this;
 
     try {
-      ctx.userInfo.ownerUid = ctx.userInfo.uid;
-      delete ctx.userInfo.uid
-
-      const params = { ...ctx.request.body, ...ctx.userInfo };
-      ctx.validate(vCreate(), params);
+      const params = ctx.requestValue
+      params.ownerUid = params.uid;
+      delete params.uid
 
       params.workspaceId = uuid(params.ownerUid);
 
@@ -34,7 +31,7 @@ class Workspace extends Controller {
     } catch (error) {
       console.log('工作区创建接口出错', error);
       ctx.body = {
-        msg: '服务器错误'
+        msg: '服务器异常，创建工作区'
       }
     }
   }
@@ -46,8 +43,7 @@ class Workspace extends Controller {
     const { ctx } = this;
 
     try {
-      ctx.validate(vGetList(), ctx.userInfo);
-      const workspaceList = await ctx.service.workspace.getList(ctx.userInfo);
+      const workspaceList = await ctx.service.workspace.getList(ctx.requestValue);
 
       if (!workspaceList.hasOwnProperty('code')) {
         ctx.body = {
@@ -73,7 +69,7 @@ class Workspace extends Controller {
       }
     } catch (error) {
       ctx.body = {
-        msg: '服务器错误'
+        msg: '服务器异常，获取工作区列表'
       }
     }
   }
@@ -84,17 +80,14 @@ class Workspace extends Controller {
   public async deleteWorkspace() {
     const { ctx } = this;
     try {
-      const params = { ...ctx.userInfo, ...ctx.request.body };
-      ctx.validate(vDelete(), params);
-
-      let results = await ctx.service.workspace.delete(params);
+      let results = await ctx.service.workspace.delete(ctx.requestValue);
       ctx.body = {
         msg: '删除工作区成功',
         results
       }
     } catch (error) {
       ctx.body = {
-        msg: '服务器错误'
+        msg: '服务器异常，删除工作区'
       }
     }
   }
@@ -105,16 +98,13 @@ class Workspace extends Controller {
   public async updateWorkspace() {
     const { ctx } = this;
     try {
-      const params = { ...ctx.userInfo, ...ctx.request.body };
-      ctx.validate(vUpdate(), params);
-
-      await ctx.service.workspace.update(params);
+      await ctx.service.workspace.update(ctx.requestValue);
       ctx.body = {
-        msg: `更新工作区${params.name}成功`,
+        msg: `更新工作区${ctx.requestValue.name}成功`,
       }
     } catch (error) {
       ctx.body = {
-        msg: '服务器错误'
+        msg: '服务器异常，更新工作区'
       }
     }
   }

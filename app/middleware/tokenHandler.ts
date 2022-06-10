@@ -14,13 +14,15 @@ export default () => {
         };
         return;
       }
-      await next();
-    } else {
+    }
+    if (!token || (!ctx.userInfo)) {
       ctx.status = 401;
       ctx.body = {
         msg: '没有token, 尝试重新登录'
       };
       return;
     }
+
+    await next()
   }
 }
