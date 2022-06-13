@@ -48,6 +48,19 @@ export default (appInfo: EggAppInfo) => {
       }
     }
 
+    config.security = {
+      csrf: {
+        enable: false
+      },
+      domainWhiteList: ['*']
+    }
+
+    config.cors = {
+      origin: ctx => ctx.get('origin'),
+      credentials: true,
+      allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
+    }
+
   // the return config will combines to EggAppConfig
   return {
     ...config,
