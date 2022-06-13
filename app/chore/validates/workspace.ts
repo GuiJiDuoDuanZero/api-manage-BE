@@ -2,7 +2,8 @@ export const vCreate = () => {
   return {
     name: { type: 'string', required: true },
     private: { type: 'number', required: true },
-    uid: { type: 'string', required: true }
+    uid: { type: 'string', required: true },
+    remark: { type: 'string', required: false }
   }
 }
 

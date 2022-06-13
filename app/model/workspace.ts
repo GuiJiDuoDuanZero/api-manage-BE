@@ -19,6 +19,10 @@ export default (app) => {
       type: String,
       required: true
     },
+    remark: { // 工作区备注
+      type: String,
+      required: false,
+    },
     workspaceId: { // 工作区唯一标识
       type: String,
       required: true
