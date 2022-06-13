@@ -38,28 +38,35 @@ export default (appInfo: EggAppInfo) => {
   }
 
   config.mongoose = {
-      client: {
-        url: 'mongodb://1.15.174.68:27017/admin',
-        options: {
-          user: 'admin',
-          pass: '123456', 
-          useUnifiedTopology: true//避免出现warning
-        },
-      }
-    }
-
-    config.security = {
-      csrf: {
-        enable: false
+    client: {
+      url: 'mongodb://1.15.174.68:27017/admin',
+      options: {
+        user: 'admin',
+        pass: '123456',
+        useUnifiedTopology: true//避免出现warning
       },
-      domainWhiteList: ['*']
     }
+  }
 
-    config.cors = {
-      origin: ctx => ctx.get('origin'),
-      credentials: true,
-      allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
+  config.security = {
+    csrf: {
+      enable: false
+    },
+    domainWhiteList: ['*']
+  }
+
+  config.cors = {
+    origin: ctx => ctx.get('origin'),
+    credentials: true,
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
+  }
+
+  config.cluster = {
+    listen: {
+      port: 9000,
+      hostname: '0.0.0.0',
     }
+  }
 
   // the return config will combines to EggAppConfig
   return {
