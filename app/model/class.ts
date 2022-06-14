@@ -11,7 +11,7 @@ export default (app) => {
       type: String,
       required: true
     },
-    parentCatId: { // 接口分类唯一标识，创建嵌套接口分类
+    parentClassId: { // 接口分类唯一标识，创建嵌套接口分类
       type: String,
       // select: false, // 查询中不包含该字段
       required: false
