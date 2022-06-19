@@ -15,8 +15,31 @@ class ApiClass extends Controller {
           msg: '工作区不存在'
         }
       }
+
       // 校验项目
-      // 暂无
+      const itemParams = { itemId: params.itemId, workspaceId: params.workspaceId };
+      const dbItem = await ctx.service.item.getDetail(itemParams);
+      if (dbItem?.hasOwnProperty('code') || !dbItem) {
+        return ctx.body = {
+          msg: '项目不存在'
+        }
+      }
+
+      // 如果存在父级id 校验父级是否存在
+      if (params.parentClassId) {
+        const checkParams = {
+          itemId: params.itemId,
+          workspaceId: params.workspaceId,
+          _id: params.parentClassId
+        }
+        const dbClass = await ctx.service.apiClass.getClass(checkParams);
+        console.log(dbClass)
+        if (dbClass?.hasOwnProperty('code') || !dbClass) {
+          return ctx.body = {
+            msg: '接口分类不存在'
+          }
+        }
+      }
 
       const dbClass = await ctx.service.apiClass.createApiClass(params);
       if (dbClass && !dbClass?.hasOwnProperty('code')) {
@@ -151,7 +174,7 @@ class ApiClass extends Controller {
       const itemId = { itemId: params.itemId }
       // 使用项目id获取该分类下的所有文件和文件夹
       const [classData, apiData] = await Promise.all([
-        ctx.service.apiClass.getClassList(itemId),
+        ctx.service.apiClass.getClassList(params),
         ctx.service.api.getList(itemId)
       ]);
 

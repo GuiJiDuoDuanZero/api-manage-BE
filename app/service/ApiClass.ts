@@ -46,7 +46,20 @@ class ApiClass extends Service {
   public async getClassList(params) {
     const { ctx } = this;
     try {
-      const results = await ctx.model.Class.find(params);
+      const results = await ctx.model.Class.find({ itemId: params.itemId });
+      return results;
+    } catch (err) {
+      return {
+        code: 500,
+        msg: JSON.stringify(err),
+      };
+    }
+  }
+
+  public async getClass(params) {
+    const { ctx } = this;
+    try {
+      const results = await ctx.model.Class.findOne(params);
       return results;
     } catch (err) {
       return {
