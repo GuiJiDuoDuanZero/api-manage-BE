@@ -30,6 +30,6 @@ export const vGet = () => {
   return {
     workspaceId: { type: 'string', required: true },
     itemId: { type: 'string', required: true },
-    classId: { type: 'string', required: true },
+    // classId: { type: 'string', required: true },
   }
 }

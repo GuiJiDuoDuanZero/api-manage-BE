@@ -126,7 +126,7 @@ class ApiClass extends Controller {
 
   public async getClassInfo() {
     const { ctx } = this;
-    const params = { ...ctx.request.body };
+    const params = { ...ctx.request.query };
     try {
       ctx.validate(vGet(), params);
       // 校验工作区
@@ -148,6 +148,47 @@ class ApiClass extends Controller {
        * 优点：逻辑拆分，可以进行复用
        * 缺点：有多少类别就需要查询多少次接口的数据库需要查询1 + n次数据库 或者 n + n次
        */
+      const itemId = { itemId: params.itemId }
+      // 使用项目id获取该分类下的所有文件和文件夹
+      const [classData, apiData] = await Promise.all([
+        ctx.service.apiClass.getClassList(itemId),
+        ctx.service.api.getList(itemId)
+      ]);
+
+      const map = { '': { children: [] } };
+      (<any>classData).forEach(item => {
+        const { _id: classId } = item;
+
+        map[classId] = {
+          workspaceId: item.workspaceId,
+          itemId: item.itemId,
+          parentClassId: item.parentClassId,
+          className: item.className,
+          classRemark: item.classRemark,
+          createAt: item.createAt,
+          updateAt: item.updateAt,
+          children: []
+        };
+      });
+
+      (<any>apiData).forEach(api => {
+        const { classId } = api;
+        if (map[classId]) {
+          map[classId].children.push(api)
+        }
+      });
+      Reflect.ownKeys(map).forEach(key => {
+        if (key) {
+          const { parentClassId } = <any>map[key];
+          map[parentClassId].children.push(map[key]);
+        }
+      });
+
+      ctx.body = {
+        data: map[''],
+        code: 0
+      }
+
     } catch (error) {
 
     }

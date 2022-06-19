@@ -18,7 +18,7 @@ export default (app) => {
         type: String,
         required: true
       },
-      catId: { // 所属分类唯一标识
+      classId: { // 所属分类唯一标识
         type: String,
         required: true
       },

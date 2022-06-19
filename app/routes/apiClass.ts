@@ -16,5 +16,10 @@ export default (app: Application) => {
   /**
    * @desc 修改接口分类接口
    */
-  router.put('/v0/workspace/item/class/update', middleware.tokenHandler(), controller.apiClass.update)
+  router.put('/v0/workspace/item/class/update', middleware.tokenHandler(), controller.apiClass.update);
+
+  /**
+   * @desc 查询接口分类和接口信息
+   */
+  router.get('/v0/workspace/item/class/list', middleware.tokenHandler(), controller.apiClass.getClassInfo);
 }
