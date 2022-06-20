@@ -19,7 +19,8 @@ class Workspace extends Controller {
         ctx.body = {
           msg: '工作区创建成功',
           data: {
-            workspaceId: workspaceInfo.workspaceId
+            workspaceId: workspaceInfo.workspaceId,
+            remark: workspaceInfo.remark
           }
         };
 
@@ -55,7 +56,8 @@ class Workspace extends Controller {
                 ownerUid: item.ownerUid,
                 uid: [],
                 private: item.private,
-                name: item.name
+                name: item.name,
+                remark: item.remark
               }
             })
           }
