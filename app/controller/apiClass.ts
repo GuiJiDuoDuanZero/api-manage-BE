@@ -2,43 +2,54 @@ import { Controller } from 'egg';
 import { vClass, vDelete, vGet, vUpdate } from '../chore/validates/apiClass';
 class ApiClass extends Controller {
 
+  private async checkData(params) {
+    const { ctx } = this;
+    // 校验工作区
+    const dbWorkspace = await ctx.service.workspace.getWorkspace(params);
+    if (dbWorkspace?.hasOwnProperty('code') || !dbWorkspace) {
+      return ctx.body = {
+        msg: '工作区不存在'
+      }
+    }
+
+    // 校验项目
+    const itemParams = { itemId: params.itemId, workspaceId: params.workspaceId };
+    const dbItem = await ctx.service.item.getDetail(itemParams);
+    if (dbItem?.hasOwnProperty('code') || !dbItem) {
+      return ctx.body = {
+        msg: '项目不存在'
+      }
+    }
+
+    // 如果存在父级id 校验父级是否存在
+    if (params.parentClassId) {
+      const checkParams = {
+        itemId: params.itemId,
+        workspaceId: params.workspaceId,
+        _id: params.parentClassId
+      }
+      const dbClass = await ctx.service.apiClass.getClass(checkParams);
+      console.log(dbClass)
+      if (dbClass?.hasOwnProperty('code') || !dbClass) {
+        return ctx.body = {
+          msg: '接口分类不存在'
+        }
+      }
+    }
+
+    return false;
+  }
+
   public async create() {
     const { ctx } = this;
     try {
       const params = ctx.request.body;
       ctx.validate(vClass(), params);
 
-      // 校验工作区
-      const dbWorkspace = await ctx.service.workspace.getWorkspace(params);
-      if (dbWorkspace?.hasOwnProperty('code') || !dbWorkspace) {
-        return ctx.body = {
-          msg: '工作区不存在'
-        }
-      }
-
-      // 校验项目
-      const itemParams = { itemId: params.itemId, workspaceId: params.workspaceId };
-      const dbItem = await ctx.service.item.getDetail(itemParams);
-      if (dbItem?.hasOwnProperty('code') || !dbItem) {
-        return ctx.body = {
-          msg: '项目不存在'
-        }
-      }
-
-      // 如果存在父级id 校验父级是否存在
-      if (params.parentClassId) {
-        const checkParams = {
-          itemId: params.itemId,
-          workspaceId: params.workspaceId,
-          _id: params.parentClassId
-        }
-        const dbClass = await ctx.service.apiClass.getClass(checkParams);
-        console.log(dbClass)
-        if (dbClass?.hasOwnProperty('code') || !dbClass) {
-          return ctx.body = {
-            msg: '接口分类不存在'
-          }
-        }
+      // 后续抽成中间件
+      const data = await this.checkData(params);
+      if (data) {
+        return;
       }
 
       const dbClass = await ctx.service.apiClass.createApiClass(params);
@@ -71,15 +82,11 @@ class ApiClass extends Controller {
     try {
       ctx.validate(vDelete(), params);
 
-      // 校验工作区
-      const dbWorkspace = await ctx.service.workspace.getWorkspace(params);
-      if (dbWorkspace?.hasOwnProperty('code') || !dbWorkspace) {
-        return ctx.body = {
-          msg: '工作区不存在'
-        }
+      // 后续抽成中间件
+      const data = await this.checkData(params);
+      if (data) {
+        return;
       }
-      // 校验项目
-      // 暂无
 
       const dbClass = await ctx.service.apiClass.deleteApiClass(params);
 
@@ -106,15 +113,11 @@ class ApiClass extends Controller {
     try {
       ctx.validate(vUpdate(), params);
 
-      // 校验工作区
-      const dbWorkspace = await ctx.service.workspace.getWorkspace(params);
-      if (dbWorkspace?.hasOwnProperty('code') || !dbWorkspace) {
-        return ctx.body = {
-          msg: '工作区不存在'
-        }
+      // 后续抽成中间件
+      const data = await this.checkData(params);
+      if (data) {
+        return;
       }
-      // 校验项目
-      // 暂无
 
       const updateInfo = {};
       Reflect.ownKeys(params).forEach(item => {
@@ -152,15 +155,12 @@ class ApiClass extends Controller {
     const params = { ...ctx.request.query };
     try {
       ctx.validate(vGet(), params);
-      // 校验工作区
-      const dbWorkspace = await ctx.service.workspace.getWorkspace(params);
-      if (dbWorkspace?.hasOwnProperty('code') || !dbWorkspace) {
-        return ctx.body = {
-          msg: '工作区不存在'
-        }
+
+      // 后续抽成中间件
+      const data = await this.checkData(params);
+      if (data) {
+        return;
       }
-      // 校验项目
-      // 暂无
 
       /**
        * @desc 两种方案
