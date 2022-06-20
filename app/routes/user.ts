@@ -22,7 +22,7 @@ export default (app: Application) => {
   /**
    * @desc 登录
    */
-  router.post(
+  router.get(
     '/v0/user/login',
     validate({
       check: vUser(),
