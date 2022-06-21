@@ -4,6 +4,9 @@ export default (params?) => {
   return async function validate(ctx: Context<any>, next) {
     const { check, msg } = params || {};
     let value = ctx.request.body;
+    if (ctx.method === "GET") {
+      value = ctx.request.query;
+    }
     // 不需要校验
     if (!check) {
       ctx.requestValue = value;
