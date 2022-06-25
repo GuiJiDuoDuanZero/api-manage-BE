@@ -80,7 +80,7 @@ class Api extends Controller {
     try {
       const params = { ...ctx.request.body };
       // ctx.validate(params);
-      // console.log('params111:',params)
+      console.log('params111:',params)
       let results = await ctx.service.api.delete(params);
       // console.log('results111:',results)
       ctx.body = {

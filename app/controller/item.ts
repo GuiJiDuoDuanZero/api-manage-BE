@@ -18,6 +18,7 @@ class Item extends Controller {
 
       if (itemInfo) {
         ctx.body = {
+          code: 0,
           msg: '项目创建成功',
           data: {
             itemId: itemInfo.itemId
