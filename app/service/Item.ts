@@ -68,6 +68,12 @@ class ItemService extends Service {
       if (key === 'name') {
         updateParams['name'] = params[key];
       };
+      if (key === 'defaultPath') {
+        updateParams['defaultPath'] = params[key];
+      };
+      if (key === 'desc') {
+        updateParams['desc'] = params[key];
+      };
 
       if (Object.keys(updateParams).length > 0) {
         updateParams['updateAt'] = Date.now();

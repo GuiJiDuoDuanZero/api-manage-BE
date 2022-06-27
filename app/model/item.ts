@@ -14,6 +14,14 @@ export default (app) => {
       type: String,
       required: true
     },
+    defaultPath: { // 基本路径
+      type: String,
+      // required: true
+    },
+    desc: { // 描述
+      type: String,
+      // required: true
+    },
     itemId: { // 项目唯一标识
       type: String,
       required: true

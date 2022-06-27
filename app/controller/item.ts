@@ -56,7 +56,8 @@ class Item extends Controller {
             itemList: (itemList as any[]).map(item => {
               return {
                 itemId: item.itemId,
-                name: item.name
+                name: item.name,
+                item: item
               }
             })
           }
@@ -84,7 +85,7 @@ class Item extends Controller {
       // console.log('params24:',query)
       const itemDetail = await ctx.service.item.getDetail(query);
       const ClassList = await ctx.service.apiClass.getClassList(query);
-      // const apiList = await ctx.service.api.getList({catId:query._id,itemId:query.itemId});
+      // const apiList = await ctx.service.api.getList({classId:query._id,itemId:query.itemId});
       // console.log('apiList:',apiList)
       // const classList= await ctx.service.item.getDetail(query);
 
@@ -99,14 +100,15 @@ class Item extends Controller {
               workspaceId: itemDetail.workspaceId,
               itemId: itemDetail.itemId,
               name: itemDetail.name,
+              itemDetail:itemDetail
             },
             list: await Promise.all((ClassList as any[]).map(async item => {
-              let apiList = await ctx.service.api.getList({ catId: item._id, itemId: item.itemId })
+              let apiList = await ctx.service.api.getList({ classId: item._id, itemId: item.itemId })
               // console.log('apiList---:',apiList);
               // console.log('item---:',item)
               item.apiList = apiList;
               return {
-                catId: item._id,
+                classId: item._id,
                 workspaceId: item.workspaceId,
                 itemId: item.itemId,
                 className: item.className,
@@ -120,8 +122,8 @@ class Item extends Controller {
             }))
 
             // list: (ClassList as any[]).map(  item => {
-            //   console.log('{catId:item._id,itemId:item.itemId}:',{catId:item._id,itemId:item.itemId})
-            //   // let apiList = await ctx.service.api.getList({catId:item._id,itemId:item.itemId}).then(res => {
+            //   console.log('{classId:item._id,itemId:item.itemId}:',{classId:item._id,itemId:item.itemId})
+            //   // let apiList = await ctx.service.api.getList({classId:item._id,itemId:item.itemId}).then(res => {
             //     item.insert({sex:'男'})
             //   console.log('item---:',item)
             //     // item.apiList = {}
@@ -134,7 +136,7 @@ class Item extends Controller {
 
             //     // console.log('item---:',item)
             //     //   return {
-            //     //   catId: item._id,
+            //     //   classId: item._id,
             //     //   workspaceId: item.workspaceId,
             //     //   itemId:item.itemId,
             //     //   className: item.className,
@@ -146,7 +148,7 @@ class Item extends Controller {
             //   // resolve(1)
             //   // return 1
             //   // return {
-            //   //   catId: item._id,
+            //   //   classId: item._id,
             //   //   workspaceId: item.workspaceId,
             //   //   itemId:item.itemId,
             //   //   className: item.className,
