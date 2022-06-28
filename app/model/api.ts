@@ -36,6 +36,11 @@ export default (app) => {
         // required: true,
         default: '未完成'
       },
+      tag: { // 接口的状态
+        type: Array,
+        // required: true,
+        // default: []
+      },
       createdAt: { // 创建时间
         type: Date,
         default: Date.now

@@ -20,11 +20,12 @@ class Api extends Controller {
           data: {
             apiId: apiInfo._id,
             title: apiInfo.title,
-            catId: apiInfo.catId,
+            classId: apiInfo.classId,
             itemId: apiInfo.itemId,
             method: apiInfo.method,
             path: apiInfo.path,
             status: apiInfo.status,
+            tag: apiInfo.tag,
             createdAt: apiInfo.createdAt,
             updatedAt: apiInfo.updatedAt,
           }

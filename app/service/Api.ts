@@ -50,11 +50,11 @@ class ApiService extends Service {
 
   // 获取api详情
   public async getDetail(params) {
-    // console.log('53:',params)
+    console.log('53:',params)
     const { ctx } = this;
     try {
       const results = await ctx.model.Api.findOne(params);
-      // console.log('57:',results)
+      console.log('57:',results)
       return results;
     } catch (err) {
       return {
@@ -67,20 +67,24 @@ class ApiService extends Service {
   private updateHelper(params) {
     const updateParams = {};
     Object.keys(params).forEach(key => {
+      if (key === 'title') {
+        updateParams['title'] = params[key];
+      };
+      if (key === 'classId') {
+        updateParams['classId'] = params[key];
+      };
       if (key === 'method') {
         updateParams['method'] = params[key];
       };
       if (key === 'path') {
         updateParams['path'] = params[key];
       };
-      if (key === 'title') {
-        updateParams['title'] = params[key];
+      if (key === 'tag') {
+        console.log('params83:',params[key])
+        updateParams['tag'] = params[key];
       };
       if (key === 'status') {
         updateParams['status'] = params[key];
-      };
-      if (key === 'catId') {
-        updateParams['catId'] = params[key];
       };
       if (Object.keys(updateParams).length > 0) {
         updateParams['updateAt'] = Date.now();
@@ -93,7 +97,7 @@ class ApiService extends Service {
    public async update(params) {
     const { ctx } = this;
     try {
-      // console.log('params:',params)
+      console.log('params100:',params)
       const results = await ctx.model.Api.updateOne({ _id: params._id }, {
         $set: this.updateHelper(params)
       });
