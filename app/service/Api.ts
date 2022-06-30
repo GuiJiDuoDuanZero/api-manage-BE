@@ -19,11 +19,14 @@ class ApiService extends Service {
 
   // 获取接口列表
   public async getList(params) {
+    // console.log('params22:',params)
     const { ctx } = this;
     try {
       const results = await ctx.model.Api.find(params);
+      // console.log('results:',results)
       return results;
     } catch (err) {
+      console.log('err:',err)
       return {
         code: 500,
         msg: JSON.stringify(err),
@@ -80,7 +83,7 @@ class ApiService extends Service {
         updateParams['path'] = params[key];
       };
       if (key === 'tag') {
-        console.log('params83:',params[key])
+        // console.log('params83:',params[key])
         updateParams['tag'] = params[key];
       };
       if (key === 'status') {
@@ -97,7 +100,7 @@ class ApiService extends Service {
    public async update(params) {
     const { ctx } = this;
     try {
-      console.log('params100:',params)
+      // console.log('params100:',params)
       const results = await ctx.model.Api.updateOne({ _id: params._id }, {
         $set: this.updateHelper(params)
       });

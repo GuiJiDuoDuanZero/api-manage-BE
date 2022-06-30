@@ -1,5 +1,6 @@
 import { Controller } from 'egg';
-import { vCreate, vGetDetail, vGetList, vUpdate } from '../chore/validates/api';
+// import { vCreate, vGetDetail, vGetList, vUpdate } from '../chore/validates/api';
+import { vCreate, vGetDetail,  vUpdate } from '../chore/validates/api';
 
 class Api extends Controller {
 
@@ -52,7 +53,7 @@ class Api extends Controller {
     try {
       const query = ctx.request.query;
       // console.log('params24:',query)
-      ctx.validate(vGetList(), query);
+      // ctx.validate(vGetList(), query);
       const apiList = await ctx.service.api.getList(query);
       // console.log('apiList:',apiList)
       if (!apiList.hasOwnProperty('code')) {
@@ -67,6 +68,7 @@ class Api extends Controller {
         msg: '获取接口列表失败',
       }
     } catch (error) {
+      console.log('error70:',error)
       ctx.body = {
         msg: '服务器错误'
       }
