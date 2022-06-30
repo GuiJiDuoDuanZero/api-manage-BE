@@ -61,12 +61,12 @@ export default (appInfo: EggAppInfo) => {
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
   }
 
-  // config.cluster = {
-  //   listen: {
-  //     port: 9000,
-  //     hostname: '0.0.0.0',
-  //   }
-  // }
+  config.cluster = {
+    listen: {
+      port: 12222,
+      hostname: '0.0.0.0',
+    }
+  }
 
   // the return config will combines to EggAppConfig
   return {
