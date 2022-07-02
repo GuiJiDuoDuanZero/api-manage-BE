@@ -46,5 +46,22 @@ export default (app: Application) => {
    * @desc 删除req
    */
   router.delete('/v0/item/api/req', middleware.tokenHandler(), controller.req.deleteItem);
+  // ————————res路由————————
+  /**
+   * @desc 创建res
+   */
+  router.post('/v0/item/api/res', middleware.tokenHandler(), controller.res.create);
+  /**
+   * @desc 获取res
+   */
+  router.get('/v0/item/api/res', middleware.tokenHandler(), controller.res.getList);
+  /**
+   * @desc 更新res
+   */
+  router.put('/v0/item/api/res', middleware.tokenHandler(), controller.res.update);
+  /**
+   * @desc 删除res
+   */
+  router.delete('/v0/item/api/res', middleware.tokenHandler(), controller.res.deleteItem);
 
 }
