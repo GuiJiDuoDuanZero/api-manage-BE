@@ -1,8 +1,10 @@
 import { Controller } from 'egg';
-import { vCreate,vGetList,vUpdate} from '../chore/validates/req';
+import { vCreate,vGetList,vUpdate,vDelete} from '../chore/validates/req';
 
 class Req extends Controller {
-
+  /**
+   * @desc 创建接口请求参数
+   */
   public async create() {
     const { ctx } = this;
     try {
@@ -35,7 +37,7 @@ class Req extends Controller {
 
 
   /**
-   * @desc 获取接口列表
+   * @desc 获取接口请求参数
    */
    public async getList() {
     const { ctx } = this;
@@ -66,7 +68,7 @@ class Req extends Controller {
 
 
   /**
-   * @desc 更新项目
+   * @desc 更新接口请求参数
    */
    public async update() {
     const { ctx } = this;
@@ -84,6 +86,33 @@ class Req extends Controller {
     } catch (error) {
       ctx.body = {
         msg: '服务器错误'
+      }
+    }
+  }
+
+
+  /**
+   * @desc 删除接口请求参数，暂时不考虑权限
+   */
+   public async deleteItem() {
+    const { ctx } = this;
+    try {
+      const params = { ...ctx.request.body };
+      // ctx.validate(params);
+      ctx.validate(vDelete(), params);
+      // console.log('params111:',params)
+      let results = await ctx.service.req.delete(params);
+      // console.log('results111:',results)
+      ctx.body = {
+        msg: '删除接口请求参数成功',
+        code: 0,
+        results: results
+      }
+    } catch (error) {
+      console.log('error:',error)
+      ctx.body = {
+        msg: '服务器错误',
+        error: error
       }
     }
   }

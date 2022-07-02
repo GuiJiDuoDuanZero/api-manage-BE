@@ -37,14 +37,14 @@ export default (app: Application) => {
   /**
    * @desc 获取req
    */
-   router.get('/v0/item/api/req', middleware.tokenHandler(), controller.req.getList);
-   /**
+  router.get('/v0/item/api/req', middleware.tokenHandler(), controller.req.getList);
+  /**
    * @desc 更新req
    */
-    router.put('/v0/item/api/req', middleware.tokenHandler(), controller.req.update);
-    /**
+  router.put('/v0/item/api/req', middleware.tokenHandler(), controller.req.update);
+  /**
    * @desc 删除req
    */
-  //  router.get('/v0/item/api/req', middleware.tokenHandler(), controller.req.getList);
+  router.delete('/v0/item/api/req', middleware.tokenHandler(), controller.req.deleteItem);
 
 }

@@ -21,13 +21,13 @@ export const vGetList = () => {
     _id: { type: 'string', required: true },
   }
 }
-export const vGetDetail = () => {
+export const vUpdate = () => {
   return {
     _id: { type: 'string', required: true }
   }
 }
-export const vUpdate = () => {
+export const vDelete = () => {
   return {
-    _id: { type: 'string', required: true }
+    _id: { type: 'string', required: true },
   }
 }

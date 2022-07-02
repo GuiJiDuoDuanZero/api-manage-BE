@@ -2,7 +2,7 @@ import { Service } from 'egg'
 
 class ReqService extends Service {
 
-  // 创建接口
+  // 创建接口请求参数
   public async create(params) {
     const { ctx } = this;
     try {
@@ -19,7 +19,7 @@ class ReqService extends Service {
   }
 
 
-  // 获取接口列表
+  // 获取接口请求参数
   public async getList(params) {
     // console.log('params22:',params)
     const { ctx } = this;
@@ -36,7 +36,7 @@ class ReqService extends Service {
     }
   }
 
-  // 删除api
+  // 删除接口请求参数
   public async delete(params) {
     const { ctx } = this;
     try {
@@ -106,7 +106,7 @@ class ReqService extends Service {
     return updateParams;
   }
 
-   // 更新api
+   // 更新接口请求参数
    public async update(params) {
     const { ctx } = this;
     try {
