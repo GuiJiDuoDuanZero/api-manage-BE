@@ -1,19 +1,5 @@
 export const vCreate = () => {
   return {
-    // req_headers['name']: { type: 'string', required: true },
-    // req_headers['value']: { type: 'string', required: true },
-    // req_headers['required']: { type: 'string', required: true },
-    // req_headers['example']: { type: 'string', required: true },
-    // req_headers['desc']: { type: 'string', required: true },
-    // req_query['name']: { type: 'string', required: true },
-    // req_query['required:'] { type: 'string', required: true },
-    // req_query['example']: { type: 'string', required: true },
-    // req_query['desc']: { type: 'string', required: true },
-    // req_body['name']: { type: 'string', required: true },
-    // req_body['type:'] { type: 'string', required: true },
-    // req_body['required']: { type: 'string', required: true },
-    // req_body['example']: { type: 'string', required: true },
-    // req_body['desc']: { type: 'string', required: true },
     req_headers_name: { type: 'string', required: false },
     req_headers_value: { type: 'string', required: false },
     req_headers_required: { type: 'string', required: false },
@@ -28,5 +14,20 @@ export const vCreate = () => {
     req_body_required: { type: 'string', required: false },
     req_body_example: { type: 'string', required: false },
     req_body_desc: { type: 'string', required: false },
+  }
+}
+export const vGetList = () => {
+  return {
+    _id: { type: 'string', required: true },
+  }
+}
+export const vGetDetail = () => {
+  return {
+    _id: { type: 'string', required: true }
+  }
+}
+export const vUpdate = () => {
+  return {
+    _id: { type: 'string', required: true }
   }
 }

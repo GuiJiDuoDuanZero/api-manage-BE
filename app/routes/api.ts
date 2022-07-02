@@ -29,10 +29,14 @@ export default (app: Application) => {
   router.put('/v0/item/api/update', middleware.tokenHandler(), controller.api.update);
 
 
-  // req路由
+  // ————————req路由————————
   /**
    * @desc 创建req
    */
   router.post('/v0/item/api/req', middleware.tokenHandler(), controller.req.create);
+  /**
+   * @desc 创建req
+   */
+   router.get('/v0/item/api/req', middleware.tokenHandler(), controller.req.getList);
 
 }
