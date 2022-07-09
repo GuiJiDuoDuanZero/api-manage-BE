@@ -1,4 +1,4 @@
-name: api-manage-BE ci
+name: Publish And Deploy Demo
 on:
   push:
     tags:
@@ -16,9 +16,8 @@ jobs:
     # 打包构建
     - name: Build
       uses: actions/setup-node@master
-#     - run: zip -q -r release.zip *
-    # - run: npm install
-    # - run: npm run build
+#     - run: npm install
+#     - run: npm run build
     - run: tar -zcvf release.tgz *
 
     # 发布 Release
