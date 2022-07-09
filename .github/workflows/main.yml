@@ -55,10 +55,10 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd /root/apiManageBE
-          npm run stop
           rm -rf *
           wget https://github.com/Can-Chen/api-manage-BE/releases/latest/download/release.tgz -O release.tgz
           tar zxvf release.tgz
           npm install --production
           npm run tsc
+          npm run stop
           npm run start
