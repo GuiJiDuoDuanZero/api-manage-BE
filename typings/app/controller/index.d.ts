@@ -6,6 +6,8 @@ import ExportApi from '../../../app/controller/api';
 import ExportApiClass from '../../../app/controller/apiClass';
 import ExportEmail from '../../../app/controller/email';
 import ExportItem from '../../../app/controller/item';
+import ExportReq from '../../../app/controller/req';
+import ExportRes from '../../../app/controller/res';
 import ExportUser from '../../../app/controller/user';
 import ExportWorkspace from '../../../app/controller/workspace';
 
@@ -15,6 +17,8 @@ declare module 'egg' {
     apiClass: ExportApiClass;
     email: ExportEmail;
     item: ExportItem;
+    req: ExportReq;
+    res: ExportRes;
     user: ExportUser;
     workspace: ExportWorkspace;
   }
