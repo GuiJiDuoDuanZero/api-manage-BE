@@ -1,8 +1,8 @@
-name: Publish And Deploy Demo
+name: api-manage-BE ci
 on:
   push:
     tags:
-      - 'v*'
+      - 'release-v*'
 
 jobs:
   build-and-deploy:
@@ -16,11 +16,35 @@ jobs:
     # 打包构建
     - name: Build
       uses: actions/setup-node@master
-#     - run: npm install
-#     - run: npm run build
-    - run: zip -q -r release.zip *
-    - run: scp release.zip ${{ secrets.USERNAME }}@${{ secrets.HOST }}/root/egg-serve
-    
+#     - run: zip -q -r release.zip *
+    # - run: npm install
+    # - run: npm run build
+    - run: tar -zcvf release.tgz *
+
+    # 发布 Release
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      with:
+        tag_name: ${{ github.ref_name }}
+        release_name: Release ${{ github.ref_name }}
+        draft: false
+        prerelease: false
+
+    # 上传构建结果到 Release
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./release.tgz
+        asset_name: release.tgz
+        asset_content_type: application/x-tgz
+
     # 部署到服务器
     - name: Deploy
       uses: appleboy/ssh-action@master
@@ -33,6 +57,7 @@ jobs:
           cd /root/node-test
           npm run stop
           rm -rf *
+          wget https://github.com/Can-Chen/api-manage-BE/releases/latest/download/release.zip -O release.zip
           unzip release.zip
           npm install --production
           npm run tsc
