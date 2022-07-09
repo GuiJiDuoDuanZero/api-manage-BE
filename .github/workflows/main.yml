@@ -18,7 +18,7 @@ jobs:
       uses: actions/setup-node@master
 #     - run: npm install
 #     - run: npm run build
-    - run: zip -q -r release.zip
+    - run: zip -q -r release.zip *
     - run: scp release.zip ${{ secrets.USERNAME }}@${{ secrets.HOST }}/root/node-test
     
     # 部署到服务器
