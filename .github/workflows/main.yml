@@ -58,7 +58,7 @@ jobs:
           rm -rf *
           wget --no-cookie --no-check-certificate https://github.com/GuiJiDuoDuanZero/api-manage-BE/releases/latest/download/release.tgz -O release.tgz
           tar zxvf release.tgz
-          npm install --production
+          npm install
           npm run tsc
           npm run stop
           npm run start

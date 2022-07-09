@@ -11,11 +11,11 @@ import ExportApiClass from '../../../app/service/ApiClass';
 import ExportDbRedis from '../../../app/service/DbRedis';
 import ExportEmail from '../../../app/service/Email';
 import ExportItem from '../../../app/service/Item';
-import ExportReq from '../../../app/service/Req';
 import ExportRes from '../../../app/service/Res';
 import ExportTest from '../../../app/service/Test';
 import ExportUser from '../../../app/service/User';
 import ExportWorkspace from '../../../app/service/Workspace';
+import ExportReq from '../../../app/service/req';
 
 declare module 'egg' {
   interface IService {
@@ -24,10 +24,10 @@ declare module 'egg' {
     dbRedis: AutoInstanceType<typeof ExportDbRedis>;
     email: AutoInstanceType<typeof ExportEmail>;
     item: AutoInstanceType<typeof ExportItem>;
-    req: AutoInstanceType<typeof ExportReq>;
     res: AutoInstanceType<typeof ExportRes>;
     test: AutoInstanceType<typeof ExportTest>;
     user: AutoInstanceType<typeof ExportUser>;
     workspace: AutoInstanceType<typeof ExportWorkspace>;
+    req: AutoInstanceType<typeof ExportReq>;
   }
 }
