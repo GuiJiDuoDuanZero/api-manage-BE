@@ -56,7 +56,7 @@ jobs:
         script: |
           cd /root/apiManageBE
           rm -rf *
-          wget https://github.com/GuiJiDuoDuanZero/api-manage-BE/releases/latest/download/release.tgz --'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36' --no-check-certificate -O release.tgz
+          wget --no-cookie --no-check-certificate https://github.com/GuiJiDuoDuanZero/api-manage-BE/releases/latest/download/release.tgz -O release.tgz
           tar zxvf release.tgz
           npm install --production
           npm run tsc
