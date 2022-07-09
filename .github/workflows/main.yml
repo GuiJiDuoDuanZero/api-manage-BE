@@ -56,7 +56,7 @@ jobs:
         script: |
           cd /root/apiManageBE
           rm -rf *
-          wget https://github.com/Can-Chen/api-manage-BE/releases/latest/download/release.tgz -O release.tgz
+          wget https://github.com/GuiJiDuoDuanZero/api-manage-BE/releases/latest/download/release.tgz -O release.tgz
           tar zxvf release.tgz
           npm install --production
           npm run tsc
