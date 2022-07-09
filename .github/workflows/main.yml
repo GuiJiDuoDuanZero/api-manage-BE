@@ -54,7 +54,7 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         script: |
-          cd /root/node-test
+          cd /root/test
           npm run stop
           rm -rf *
           wget https://github.com/Can-Chen/api-manage-BE/releases/latest/download/release.tgz -O release.tgz
